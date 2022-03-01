@@ -18,8 +18,7 @@ class TestReadLine {
       
       System.out.println("\nChar is: " + num);
     
-      String os = System.getProperty("os.name");
-      System.out.println(os);
+      
    
     
   }

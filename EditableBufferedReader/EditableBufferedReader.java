@@ -30,8 +30,14 @@ public class EditableBufferedReader extends BufferedReader {
     }
 
     public void unSetRaw() {
-
-        String[] command = { "bash", "-c", "stty -echo cooked </dev/tty" };
+        String os = System.getProperty("os.name");
+        String[] command = { "bash", "-c", "" };
+        if(os.equals("Mac OS X")){
+            command[2]="stty -echo cooked </dev/tty";
+        }else{
+            command[2]="stty sane";
+        }
+        
         try {
             Runtime.getRuntime().exec(command).waitFor();
         } catch (IOException e) {
