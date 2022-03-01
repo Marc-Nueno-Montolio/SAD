@@ -25,7 +25,7 @@ public class EditableBufferedReader extends BufferedReader {
     }
 
     public void setRaw() {
-        String[] command = { "/bin/bash", "-c", "stty -echo raw </dev/tty" };
+        String[] command = { "bash", "-c", "stty -echo raw </dev/tty" };
         // /bin/bash: change to bash shell
         // -c parameter: read commands from string
         // </dev/tty: get input from stdin into raw mode
@@ -40,7 +40,7 @@ public class EditableBufferedReader extends BufferedReader {
 
     public void unSetRaw() {
 
-        String[] command = { "/bin/bash", "-c", "stty -echo cooked </dev/tty" };
+        String[] command = { "bash", "-c", "stty -echo cooked </dev/tty" };
         try {
             Runtime.getRuntime().exec(command).waitFor();
         } catch (IOException e) {
