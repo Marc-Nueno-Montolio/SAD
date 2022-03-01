@@ -8,7 +8,6 @@ class TestReadLine {
       new InputStreamReader(System.in));
     //String str = null;
     Integer num = 0;
-    while(true){
       try {
         //str = in.readLine();
         in.setRaw();
@@ -18,7 +17,9 @@ class TestReadLine {
       //System.out.println("\nline is: " + str);
       
       System.out.println("\nChar is: " + num);
-    }
+    
+      String os = System.getProperty("os.name");
+      System.out.println(os);
    
     
   }
