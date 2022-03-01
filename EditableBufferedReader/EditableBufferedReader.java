@@ -29,15 +29,26 @@ public class EditableBufferedReader extends BufferedReader {
         }
     }
 
-    public void unSetRaw() throws InterruptedException, IOException {
+    public void unSetRaw() {
         String os = System.getProperty("os.name");
         String[] command = { "bash", "-c", "" };
         if(os.equals("Mac OS X")){
             command[2]="stty -echo cooked </dev/tty";
-                Runtime.getRuntime().exec(command).waitFor();
+
+                try {
+                    Runtime.getRuntime().exec(command).waitFor();
+                } catch (InterruptedException | IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
     
         }else{
-            Runtime.getRuntime().exec("stty sane").waitFor();
+            try {
+                Runtime.getRuntime().exec("stty sane").waitFor();
+            } catch (InterruptedException | IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         
         try {
