@@ -63,9 +63,9 @@ public class EditableBufferedReader extends BufferedReader {
                         return keys.RIGHT;
                     case 'H':
                         return keys.HOME;
-                    case 'E': 
+                    case 'F': 
                         return keys.END;
-                    case 'I': 
+                    case '2': 
                         return keys.INS;
                 }
             }
