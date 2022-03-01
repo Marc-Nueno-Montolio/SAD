@@ -8,17 +8,8 @@ import java.io.Reader;
  */
 public class EditableBufferedReader extends BufferedReader {
 
-    // General ASCII Codes
-    private final int ESCAPE = 27;
-    private final int DEL = 127;
-    private final int BKSP = 8;
 
-    // Custom extended ASCII Codes
-    private final int LEFT = -1;
-    private final int RIGHT = -2;
-    private final int HOME = -3;
-    private final int END = -4;
-    private final int ERASE_ONE = 127;
+    private Constants keys = new Constants();
 
     public EditableBufferedReader(Reader in) {
         super(in);
@@ -58,7 +49,7 @@ public class EditableBufferedReader extends BufferedReader {
     @Override
     public int read() throws IOException {
         int key = super.read();
-        if (key == ESCAPE) {
+        if (key == keys.ESCAPE) {
             // It is a escape key sequence
             key = super.read();
             if (key != '[') {
@@ -67,15 +58,19 @@ public class EditableBufferedReader extends BufferedReader {
                 key = super.read();
                 switch (key) {
                     case 'D': // left
-                        return -1;
+                        return keys.LEFT;
                     case 'C': // left
-                        return -2;
+                        return keys.RIGHT;
                     case 'H':
-                        return -3;
+                        return keys.HOME;
+                    case 'E': 
+                        return keys.END;
+                    case 'I': 
+                        return keys.INS;
                 }
             }
             return key;
-        } else if (key == BKSP) {
+        } else if (key == keys.BKSP) {
             // TODO: Erase one position
         }
 
