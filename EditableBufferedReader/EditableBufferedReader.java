@@ -66,6 +66,7 @@ public class EditableBufferedReader extends BufferedReader {
                     case 'F': 
                         return keys.END;
                     case '2': 
+                        super.read();
                         return keys.INS;
                 }
             }
