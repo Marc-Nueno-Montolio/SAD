@@ -44,7 +44,8 @@ public class EditableBufferedReader extends BufferedReader {
     
         }else{
             try {
-                Runtime.getRuntime().exec("stty sane").waitFor();
+                String[] commanda = { "bash", "-c", "stty sane </dev/tty" };
+                Runtime.getRuntime().exec(commanda).waitFor();
             } catch (InterruptedException | IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
