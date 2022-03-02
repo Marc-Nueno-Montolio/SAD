@@ -8,9 +8,6 @@ import java.io.Reader;
  */
 public class EditableBufferedReader extends BufferedReader {
 
-
-    private Constants keys = new Constants();
-
     public EditableBufferedReader(Reader in) {
         super(in);
     }
@@ -32,17 +29,17 @@ public class EditableBufferedReader extends BufferedReader {
     public void unSetRaw() {
         String os = System.getProperty("os.name");
         String[] command = { "bash", "-c", "" };
-        if(os.equals("Mac OS X")){
-            command[2]="stty -echo cooked </dev/tty";
+        if (os.equals("Mac OS X")) {
+            command[2] = "stty -echo cooked </dev/tty";
 
-                try {
-                    Runtime.getRuntime().exec(command).waitFor();
-                } catch (InterruptedException | IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-    
-        }else{
+            try {
+                Runtime.getRuntime().exec(command).waitFor();
+            } catch (InterruptedException | IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+        } else {
             try {
                 String[] commanda = { "bash", "-c", "stty sane </dev/tty" };
                 Runtime.getRuntime().exec(commanda).waitFor();
@@ -51,7 +48,7 @@ public class EditableBufferedReader extends BufferedReader {
                 e.printStackTrace();
             }
         }
-        
+
         try {
             Runtime.getRuntime().exec(command).waitFor();
         } catch (IOException e) {
@@ -63,36 +60,55 @@ public class EditableBufferedReader extends BufferedReader {
 
     @Override
     public String readLine() throws IOException {
-        return null;
+        Line line = new Line();
+        this.setRaw();
+
+        int key = this.read();
+
+        while (key != Keys.RETURN) {
+            switch (key) {
+                case Keys.DEL:
+                    line.delete();
+                    System.out.print(TerminalActions.ERASE_ONE_LEFT);
+                    break;
+
+                default:
+                    line.add((char) key);
+                    System.out.print((char) key);
+                    break;
+            }
+            key = this.read();
+
+        }
+        this.unSetRaw();
+        return line.getLine();
+
     }
 
     @Override
     public int read() throws IOException {
         int key = super.read();
-        if (key == keys.ESCAPE) {
+        if (key == Keys.ESCAPE) {
             // It is a escape key sequence
             key = super.read();
-            if (key != '[') {
-                // TODO: Process invalid input
-            } else {
+            if (key == '[') {
                 key = super.read();
                 switch (key) {
                     case 'D': // left
-                        return keys.LEFT;
+                        return Keys.LEFT;
                     case 'C': // left
-                        return keys.RIGHT;
+                        return Keys.RIGHT;
                     case 'H':
-                        return keys.HOME;
-                    case 'F': 
-                        return keys.END;
-                    case '2': 
+                        return Keys.HOME;
+                    case 'F':
+                        return Keys.END;
+                    case '2':
                         super.read();
-                        return keys.INS;
+                        return Keys.INS;
                 }
+            } else {
+                return key;
             }
-            return key;
-        } else if (key == keys.BKSP) {
-            // TODO: Erase one position
         }
 
         return key;
