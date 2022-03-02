@@ -6,20 +6,12 @@ class TestReadLine {
 
     EditableBufferedReader in = new EditableBufferedReader(
       new InputStreamReader(System.in));
-    //String str = null;
-    Integer num = 0;
+    String str = null;
       try {
-        //str = in.readLine();
-        in.setRaw();
-              num = in.read();
-        in.unSetRaw();
+        str = in.readLine();  
       } catch (IOException e) { e.printStackTrace(); }
-      //System.out.println("\nline is: " + str);
+      System.out.println("\nline is: " + str);
       
-      System.out.println("\nChar is: " + num);
-    
       
-   
-    
   }
 }
