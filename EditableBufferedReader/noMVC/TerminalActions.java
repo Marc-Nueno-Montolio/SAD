@@ -4,5 +4,6 @@ public class TerminalActions {
             MOVE_RIGHT = ESCAPE + "[1C",
             ERASE = ESCAPE + "[1P",
             ERASE_ONE_LEFT = MOVE_LEFT + ERASE,
-            HOME = ESCAPE + "[#G";	
+            HOME = ESCAPE + "[1G";
+
 }

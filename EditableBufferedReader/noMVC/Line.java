@@ -9,6 +9,7 @@ import java.io.IOException;
 public class Line {
     private String line;
     private int cursor;
+    private boolean insertMode;
 
     public Line() {
         line = "";

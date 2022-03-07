@@ -72,12 +72,12 @@ public class EditableBufferedReader extends BufferedReader {
                     System.out.print(TerminalActions.ERASE_ONE_LEFT);
                     break;
                 case Keys.LEFT:
-                    if(line.decreaseCursor())
+                    if (line.decreaseCursor())
                         System.out.print(TerminalActions.MOVE_LEFT);
                     break;
 
                 case Keys.RIGHT:
-                    if(line.increaseCursor())
+                    if (line.increaseCursor())
                         System.out.print(TerminalActions.MOVE_RIGHT);
                     break;
 
@@ -85,14 +85,20 @@ public class EditableBufferedReader extends BufferedReader {
                     System.out.print(TerminalActions.HOME);
                     line.goToHome();
                     break;
-                
+
                 case Keys.END:
+                    if (line.getCursorPos() < line.length()) {
+                        System.out.print(TerminalActions.ESCAPE + "[" + (line.length() - line.getCursorPos()) + "C");
+                        line.goToEnd();
+                    }
                     break;
 
                 case Keys.INS:
+                    // TODO: Toggle insert mode
                     break;
 
                 case Keys.DEL:
+                    // TODO: Delete functionality
                     break;
 
                 default:
@@ -106,7 +112,7 @@ public class EditableBufferedReader extends BufferedReader {
         this.unSetRaw();
 
         return line.getLine();
-        
+
     }
 
     @Override
@@ -131,7 +137,9 @@ public class EditableBufferedReader extends BufferedReader {
                         return Keys.INS;
                     case '3':
                         super.read();
-                    return Keys.DEL;
+                        return Keys.DEL;
+                    default:
+                        break;
                 }
             } else {
                 return key;
