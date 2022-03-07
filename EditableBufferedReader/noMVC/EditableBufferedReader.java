@@ -67,9 +67,32 @@ public class EditableBufferedReader extends BufferedReader {
 
         while (key != Keys.RETURN) {
             switch (key) {
-                case Keys.DEL:
-                    line.delete();
+                case Keys.BKSP:
+                    line.erase();
                     System.out.print(TerminalActions.ERASE_ONE_LEFT);
+                    break;
+                case Keys.LEFT:
+                    if(line.decreaseCursor())
+                        System.out.print(TerminalActions.MOVE_LEFT);
+                    break;
+
+                case Keys.RIGHT:
+                    if(line.increaseCursor())
+                        System.out.print(TerminalActions.MOVE_RIGHT);
+                    break;
+
+                case Keys.HOME:
+                    System.out.print(TerminalActions.HOME);
+                    line.goToHome();
+                    break;
+                
+                case Keys.END:
+                    break;
+
+                case Keys.INS:
+                    break;
+
+                case Keys.DEL:
                     break;
 
                 default:
@@ -81,8 +104,9 @@ public class EditableBufferedReader extends BufferedReader {
 
         }
         this.unSetRaw();
-        return line.getLine();
 
+        return line.getLine();
+        
     }
 
     @Override
@@ -105,6 +129,9 @@ public class EditableBufferedReader extends BufferedReader {
                     case '2':
                         super.read();
                         return Keys.INS;
+                    case '3':
+                        super.read();
+                    return Keys.DEL;
                 }
             } else {
                 return key;
