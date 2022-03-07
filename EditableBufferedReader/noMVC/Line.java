@@ -1,7 +1,4 @@
 import java.io.IOException;
-import java.net.SocketTimeoutException;
-
-import javax.sound.sampled.SourceDataLine;
 
 /**
  *
@@ -22,6 +19,10 @@ public class Line {
         return this.line;
     }
 
+    public int length() {
+        return this.line.length();
+    }
+
     public int getCursorPos() {
         return this.cursor;
     }
@@ -31,19 +32,44 @@ public class Line {
         this.line += c;
     }
 
-    public void delete() {
+    public void erase() {
         if (this.cursor > 0) {
-            this.line = this.line.substring(0, this.line.length() - 1);
+
+            if (this.cursor == this.line.length()) {
+                // Just remove one from the end
+                this.line = this.line.substring(0, this.line.length() - 1);
+            } else {
+                // When deleting, we have to append the remaining right portion
+                String end = this.line.substring(this.cursor, this.line.length());
+                this.line = this.line.substring(0, this.cursor - 1) + end;
+            }
+
             this.cursor--;
         }
-
     }
 
-    public void CursorBegin() {
-        cursor = 0;
+    public boolean decreaseCursor() {
+        if (cursor > 0) {
+            this.cursor--;
+            return true;
+        }
+        return false;
     }
 
-    public void CursorEnd() {
+    public boolean increaseCursor() {
+        // Boolean to avoid infinite right scroll
+        if (cursor < line.length()) {
+            this.cursor++;
+            return true;
+        }
+        return false;
+    }
 
+    public void goToHome() {
+        this.cursor = 0;
+    }
+
+    public void goToEnd() {
+        this.cursor = this.line.length();
     }
 }
