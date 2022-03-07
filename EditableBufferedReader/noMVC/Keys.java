@@ -2,8 +2,7 @@ public class Keys {
         // General ASCII Codes
         public static final int 
                 ESCAPE = 27,
-                DEL = 127,
-                BKSP = 8,
+                BKSP = 127,
                 RETURN = 13;
     
         // Custom extended ASCII Codes
@@ -12,5 +11,6 @@ public class Keys {
                 HOME = -3,
                 END = -4,
                 INS = -5,
-                TERMINATE = -6;
+                TERMINATE = -6,
+                DEL = -7;
 }
