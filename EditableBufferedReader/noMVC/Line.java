@@ -38,15 +38,16 @@ public class Line {
         return this.cursor;
     }
 
-    public void add(char c, int pos) {
-        if(pos == this.length()){
+    public String add(char c) {
+        if(this.cursor == this.length()){
             this.line += c;
             this.cursor ++;
         }else{
-            String end = this.line.substring(pos, this.length());
-            this.line = this.line.substring(0, pos) + c + end;
-            this.cursor = pos+1;
+            String end = this.line.substring(this.cursor);
+            this.line = this.line.substring(0, this.cursor) + c + end;
+            this.cursor++;
         }
+        return this.line.substring(this.cursor-1); // return the inserted character + the end
     }
 
     public void insert(char c) {

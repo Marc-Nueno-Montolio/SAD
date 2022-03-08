@@ -96,7 +96,7 @@ public class EditableBufferedReader extends BufferedReader {
                 case Keys.INS:
                     line.toggleInsertMode();
                     break;
-
+ 
                 case Keys.DEL:
                     break;
 
@@ -105,27 +105,17 @@ public class EditableBufferedReader extends BufferedReader {
                         line.insert((char)key);
                         System.out.print((char) key);
                     } else {   
-                          
-                        if(line.getCursorPos() < line.length()){
-                            line.add((char) key, line.getCursorPos()); 
-                            System.out.print(TerminalActions.ERASE_LINE);
-                            System.out.print((char) key);
-                            System.out.print(line.getLine() + TerminalActions.ESCAPE + "[" + line.getCursorPos() + "G");
-                        }else{
-                            line.add((char) key, line.getCursorPos());    
-                            System.out.print((char) key);  
-                        }
-
-                       
+                     // Erase to right, print line from index, place cursor
+                        System.out.print(TerminalActions.ERASE_UNTIL_END);
+                        System.out.print(line.add((char)key));
+                        System.out.print(TerminalActions.ESCAPE + "[" + (line.getCursorPos()+1) + "G");
                         
                     }
-                    break;
             }
             key = this.read();
 
         }
         this.unSetRaw();
-        System.out.println("\n Cursor is at: " +line.getCursorPos());
         return line.getLine();
 
     }
