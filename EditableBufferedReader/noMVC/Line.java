@@ -12,8 +12,13 @@ public class Line {
     private boolean insertMode;
 
     public Line() {
-        line = "";
-        cursor = 0;
+        this.line = "";
+        this.cursor = 0;
+        this.insertMode = true;
+    }
+
+    public Boolean getInsertMode() {
+        return this.insertMode;
     }
 
     public String getLine() {
@@ -31,6 +36,14 @@ public class Line {
     public void add(char c) {
         this.cursor++;
         this.line += c;
+
+    }
+
+    public void insert(char c) {
+        char[] chars = this.line.toCharArray();
+        chars[this.cursor] = c;
+        this.line = String.valueOf(chars);
+        this.cursor++;
     }
 
     public void erase() {

@@ -102,7 +102,11 @@ public class EditableBufferedReader extends BufferedReader {
                     break;
 
                 default:
-                    line.add((char) key);
+                    if (line.getInsertMode() && line.getCursorPos() < line.length()) {
+                        line.insert((char) key);
+                    } else {
+                        line.add((char) key);
+                    }
                     System.out.print((char) key);
                     break;
             }
