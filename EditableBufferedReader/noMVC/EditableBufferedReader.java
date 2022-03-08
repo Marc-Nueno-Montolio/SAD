@@ -94,27 +94,38 @@ public class EditableBufferedReader extends BufferedReader {
                     break;
 
                 case Keys.INS:
-                    // TODO: Toggle insert mode
+                    line.toggleInsertMode();
                     break;
 
                 case Keys.DEL:
-                    // TODO: Delete functionality
                     break;
 
                 default:
                     if (line.getInsertMode() && line.getCursorPos() < line.length()) {
-                        line.insert((char) key);
-                    } else {
-                        line.add((char) key);
+                        line.insert((char)key);
+                        System.out.print((char) key);
+                    } else {   
+                          
+                        if(line.getCursorPos() < line.length()){
+                            line.add((char) key, line.getCursorPos()); 
+                            System.out.print(TerminalActions.ERASE_LINE);
+                            System.out.print((char) key);
+                            System.out.print(line.getLine() + TerminalActions.ESCAPE + "[" + line.getCursorPos() + "G");
+                        }else{
+                            line.add((char) key, line.getCursorPos());    
+                            System.out.print((char) key);  
+                        }
+
+                       
+                        
                     }
-                    System.out.print((char) key);
                     break;
             }
             key = this.read();
 
         }
         this.unSetRaw();
-
+        System.out.println("\n Cursor is at: " +line.getCursorPos());
         return line.getLine();
 
     }
@@ -143,10 +154,12 @@ public class EditableBufferedReader extends BufferedReader {
                         super.read();
                         return Keys.DEL;
                     default:
+                        key = super.read();
                         break;
                 }
             }
         } else if (key == Keys.EXIT || key == Keys.EOT) {
+            this.unSetRaw(); // Avoid leaving the terminal in Raw mode
             System.exit(0);
         }
         return key;

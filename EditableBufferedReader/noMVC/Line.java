@@ -1,3 +1,4 @@
+
 import java.io.IOException;
 
 /**
@@ -14,11 +15,15 @@ public class Line {
     public Line() {
         this.line = "";
         this.cursor = 0;
-        this.insertMode = true;
+        this.insertMode = false;
     }
 
     public Boolean getInsertMode() {
         return this.insertMode;
+    }
+
+    public void toggleInsertMode() {
+        this.insertMode = !this.insertMode;
     }
 
     public String getLine() {
@@ -33,10 +38,15 @@ public class Line {
         return this.cursor;
     }
 
-    public void add(char c) {
-        this.cursor++;
-        this.line += c;
-
+    public void add(char c, int pos) {
+        if(pos == this.length()){
+            this.line += c;
+            this.cursor ++;
+        }else{
+            String end = this.line.substring(pos, this.length());
+            this.line = this.line.substring(0, pos) + c + end;
+            this.cursor = pos+1;
+        }
     }
 
     public void insert(char c) {
