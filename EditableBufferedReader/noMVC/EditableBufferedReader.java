@@ -96,20 +96,19 @@ public class EditableBufferedReader extends BufferedReader {
                 case Keys.INS:
                     line.toggleInsertMode();
                     break;
- 
+
                 case Keys.DEL:
                     break;
 
                 default:
                     if (line.getInsertMode() && line.getCursorPos() < line.length()) {
-                        line.insert((char)key);
+                        line.insert((char) key);
                         System.out.print((char) key);
-                    } else {   
-                     // Erase to right, print line from index, place cursor
+                    } else {
                         System.out.print(TerminalActions.ERASE_UNTIL_END);
-                        System.out.print(line.add((char)key));
-                        System.out.print(TerminalActions.ESCAPE + "[" + (line.getCursorPos()+1) + "G");
-                        
+                        System.out.print(line.add((char) key));
+                        System.out.print(TerminalActions.ESCAPE + "[" + (line.getCursorPos() + 1) + "G");
+
                     }
             }
             key = this.read();

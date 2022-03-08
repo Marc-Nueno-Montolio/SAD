@@ -39,15 +39,15 @@ public class Line {
     }
 
     public String add(char c) {
-        if(this.cursor == this.length()){
+        if (this.cursor == this.length()) {
             this.line += c;
-            this.cursor ++;
-        }else{
+            this.cursor++;
+        } else {
             String end = this.line.substring(this.cursor);
             this.line = this.line.substring(0, this.cursor) + c + end;
             this.cursor++;
         }
-        return this.line.substring(this.cursor-1); // return the inserted character + the end
+        return this.line.substring(this.cursor - 1); // return the inserted character + the end
     }
 
     public void insert(char c) {
