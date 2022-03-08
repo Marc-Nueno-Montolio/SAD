@@ -3,7 +3,9 @@ public class Keys {
         public static final int 
                 ESCAPE = 27,
                 BKSP = 127,
-                RETURN = 13;
+                RETURN = 13,
+                EXIT = 3,
+                EOT = 4;
     
         // Custom extended ASCII Codes
         public static final int LEFT = -1,

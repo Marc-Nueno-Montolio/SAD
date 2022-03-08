@@ -145,11 +145,10 @@ public class EditableBufferedReader extends BufferedReader {
                     default:
                         break;
                 }
-            } else {
-                return key;
             }
+        } else if (key == Keys.EXIT || key == Keys.EOT) {
+            System.exit(0);
         }
-
         return key;
     }
 
