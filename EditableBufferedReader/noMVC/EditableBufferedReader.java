@@ -98,6 +98,8 @@ public class EditableBufferedReader extends BufferedReader {
                     break;
 
                 case Keys.DEL:
+                    System.out.print(TerminalActions.ERASE);
+                    line.delete();
                     break;
 
                 default:

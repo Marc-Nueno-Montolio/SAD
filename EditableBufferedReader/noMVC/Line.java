@@ -72,6 +72,15 @@ public class Line {
             this.cursor--;
         }
     }
+    public void delete(){
+        if(this.cursor<this.length()){
+            String end = this.line.substring(this.cursor,this.length());
+            this.line = this.line.substring(0, this.cursor -1) + end;
+ 
+        }else{
+            System.out.print("\007");
+        }
+    }
 
     public boolean decreaseCursor() {
         if (cursor > 0) {
