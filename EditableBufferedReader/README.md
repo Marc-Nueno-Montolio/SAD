@@ -8,6 +8,13 @@ Aquest projecte consisteix en programar una classe EditableBufferedReader que im
 - <kbd>DEL</kbd>, <kbd>bksp</kbd> : esborra caràcter actual o caràcter a l’esquerra. :
 
 Veure https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797
+
+## Mouse events:
+
+Per mostrar events del cursor: echo "\e[?1003h"
+Veure: https://stackoverflow.com/questions/59864485/capturing-mouse-in-virtual-terminal-with-ansi-escape
+
+
 ## Passar de modecooked a raw:
 ```console
 stty -echo raw 
