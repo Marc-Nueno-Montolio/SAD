@@ -59,10 +59,32 @@ public class EditableBufferedReader extends BufferedReader {
         }
     }
 
+    public void setMouseReporting(){
+        String[] command = { "bash", "-c", "stty -echo raw </dev/tty" };
+        try {
+            Runtime.getRuntime().exec("printf '\033[?1000h'").waitFor(); // Esperem a que el terminal canvi el mode
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void unSetMouseReporting(){
+        try {
+            Runtime.getRuntime().exec("printf '\033[?1000l'").waitFor(); // Esperem a que el terminal canvi el mode
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public String readLine() throws IOException {
         Line line = new Line();
         this.setRaw();
+        this.setMouseReporting();
 
         int key = this.read();
 
@@ -118,6 +140,7 @@ public class EditableBufferedReader extends BufferedReader {
 
         }
         this.unSetRaw();
+        this.unSetMouseReporting();
         return line.getLine();
 
     }
