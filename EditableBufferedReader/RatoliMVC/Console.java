@@ -43,6 +43,9 @@ public class Console implements Observer {
                 case Keys.DEL:
                     System.out.print(ERASE);
                     break;
+                case Keys.MB1_CLICK_DOWN:
+                    System.out.print(ESCAPE + "[" + line.getCursorPos() + "G");
+                    break;
             }
         } else {
                 System.out.print(ERASE_UNTIL_END);

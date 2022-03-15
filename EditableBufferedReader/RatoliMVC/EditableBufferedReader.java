@@ -68,7 +68,7 @@ public class EditableBufferedReader extends BufferedReader {
      */
     @Override
     public String readLine() throws IOException {
-        
+        System.out.println("\033[?1000h");
         Line line = new Line();
         Console console = new Console();
         line.addObserver(console);
@@ -104,6 +104,12 @@ public class EditableBufferedReader extends BufferedReader {
 
                 case Keys.DEL:
                     line.delete();
+                    break;
+
+                    case Keys.MB1_CLICK_DOWN:
+                        int cx = (byte) (super.read() -33);
+                        int cy = (byte) (super.read() -33);
+                        line.goToCursorPos (cx);
                     break;
 
                 default:
@@ -146,6 +152,11 @@ public class EditableBufferedReader extends BufferedReader {
                     case '3':
                         super.read();
                         return Keys.DEL;
+                    case 'M':
+                        int cb = (byte) (super.read() -32);
+                        
+                            return Keys.MB1_CLICK_DOWN;
+                        
                     default:
                         key = super.read();
                         break;
@@ -157,6 +168,7 @@ public class EditableBufferedReader extends BufferedReader {
         }
         return key;
     }
+
 
 }
 

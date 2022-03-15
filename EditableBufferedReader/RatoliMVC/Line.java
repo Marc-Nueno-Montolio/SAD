@@ -116,4 +116,11 @@ public class Line extends Observable {
     public String toString() {
         return this.line;
     }
+    public void goToCursorPos(int x){
+        if(this.cursor>0 && this.cursor<line.length()){
+            this.cursor = x;
+            setChanged();
+            notifyObservers(Keys.MB1_CLICK_DOWN);
+        }
+    }
 }
