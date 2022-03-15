@@ -1,10 +1,11 @@
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 
 /**
- *
+ * EditableBufferedReader class extends the BufferedReader class giving
+ * functionality to read keys.
+ * 
  * @author marcnueno
  */
 public class EditableBufferedReader extends BufferedReader {
@@ -13,107 +14,88 @@ public class EditableBufferedReader extends BufferedReader {
         super(in);
     }
 
-    public void setRaw() {
+    /**
+     * Sets the terminal in raw mode
+     * /bin/bash: change to bash shell
+     * -c parameter: read commands from string
+     * </dev/tty: get input from stdin into raw mode
+     * 
+     * @throws InterruptedException
+     * @throws IOException
+     */
+    public void setRaw() throws IOException {
         String[] command = { "bash", "-c", "stty -echo raw </dev/tty" };
-        // /bin/bash: change to bash shell
-        // -c parameter: read commands from string
-        // </dev/tty: get input from stdin into raw mode
-        try {
-            Runtime.getRuntime().exec(command).waitFor(); // Esperem a que el terminal canvi el mode
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void unSetRaw() {
-        String os = System.getProperty("os.name");
-        String[] command = { "bash", "-c", "" };
-        if (os.equals("Mac OS X")) {
-            command[2] = "stty -echo cooked </dev/tty";
-
-            try {
-                Runtime.getRuntime().exec(command).waitFor();
-            } catch (InterruptedException | IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-        } else {
-            try {
-                String[] commanda = { "bash", "-c", "stty sane </dev/tty" };
-                Runtime.getRuntime().exec(commanda).waitFor();
-            } catch (InterruptedException | IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-
         try {
             Runtime.getRuntime().exec(command).waitFor();
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-    public void setMouseReporting(){
-        String[] command = { "bash", "-c", "stty -echo raw </dev/tty" };
-        try {
-            Runtime.getRuntime().exec("printf '\033[?1000h'").waitFor(); // Esperem a que el terminal canvi el mode
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    /**
+     * @throws InterruptedException
+     * @throws IOException
+     */
+    public void unSetRaw() throws IOException {
+        String os = System.getProperty("os.name");
+        String[] command = { "bash", "-c", "stty sane </dev/tty" };
+        switch (os) {
+            case "Mac OS X":
+                command = new String[] { "bash", "-c", "stty -echo cooked </dev/tty" };
+                try {
+                    Runtime.getRuntime().exec(command).waitFor();
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                break;
+
+            default:
+                try {
+                    Runtime.getRuntime().exec(command).waitFor();
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                break;
         }
     }
 
-    public void unSetMouseReporting(){
-        try {
-            Runtime.getRuntime().exec("printf '\033[?1000l'").waitFor(); // Esperem a que el terminal canvi el mode
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * @return String
+     * @throws IOException
+     */
     @Override
     public String readLine() throws IOException {
+        
         Line line = new Line();
-        this.setRaw();
-        this.setMouseReporting();
+        Console console = new Console();
+        line.addObserver(console);
 
+        this.setRaw();
         int key = this.read();
 
         while (key != Keys.RETURN) {
             switch (key) {
                 case Keys.BKSP:
                     line.erase();
-                    System.out.print(TerminalActions.ERASE_ONE_LEFT);
                     break;
+
                 case Keys.LEFT:
-                    if (line.decreaseCursor())
-                        System.out.print(TerminalActions.MOVE_LEFT);
+                    line.decreaseCursor();
                     break;
 
                 case Keys.RIGHT:
-                    if (line.increaseCursor())
-                        System.out.print(TerminalActions.MOVE_RIGHT);
+                    line.increaseCursor();
                     break;
 
                 case Keys.HOME:
-                    System.out.print(TerminalActions.HOME);
                     line.goToHome();
                     break;
 
                 case Keys.END:
-                    if (line.getCursorPos() < line.length()) {
-                        System.out.print(TerminalActions.ESCAPE + "[" + (line.length() - line.getCursorPos()) + "C");
-                        line.goToEnd();
-                    }
+                    line.goToEnd();
                     break;
 
                 case Keys.INS:
@@ -121,27 +103,23 @@ public class EditableBufferedReader extends BufferedReader {
                     break;
 
                 case Keys.DEL:
-                    System.out.print(TerminalActions.ERASE);
                     line.delete();
                     break;
 
                 default:
                     if (line.getInsertMode() && line.getCursorPos() < line.length()) {
-                        line.insert((char) key);
-                        System.out.print((char) key);
+                         line.insert((char) key);
                     } else {
-                        System.out.print(TerminalActions.ERASE_UNTIL_END);
-                        System.out.print(line.add((char) key));
-                        System.out.print(TerminalActions.ESCAPE + "[" + (line.getCursorPos() + 1) + "G");
+                        line.add((char) key);
 
                     }
+                    break;
             }
             key = this.read();
 
         }
         this.unSetRaw();
-        this.unSetMouseReporting();
-        return line.getLine();
+        return line.toString();
 
     }
 
@@ -181,3 +159,4 @@ public class EditableBufferedReader extends BufferedReader {
     }
 
 }
+

@@ -1,5 +1,6 @@
 
 import java.io.IOException;
+import java.util.Observable;
 
 /**
  *
@@ -7,7 +8,7 @@ import java.io.IOException;
  */
 
 // Aquesta classe només guarda l'estat
-public class Line {
+public class Line extends Observable {
     private String line;
     private int cursor;
     private boolean insertMode;
@@ -15,7 +16,7 @@ public class Line {
     public Line() {
         this.line = "";
         this.cursor = 0;
-        this.insertMode = false;
+        this.insertMode = true;
     }
 
     public Boolean getInsertMode() {
@@ -24,10 +25,8 @@ public class Line {
 
     public void toggleInsertMode() {
         this.insertMode = !this.insertMode;
-    }
-
-    public String getLine() {
-        return this.line;
+        setChanged();
+        notifyObservers(Keys.INS);
     }
 
     public int length() {
@@ -38,7 +37,7 @@ public class Line {
         return this.cursor;
     }
 
-    public String add(char c) {
+    public void add(char c) {
         if (this.cursor == this.length()) {
             this.line += c;
             this.cursor++;
@@ -47,7 +46,9 @@ public class Line {
             this.line = this.line.substring(0, this.cursor) + c + end;
             this.cursor++;
         }
-        return this.line.substring(this.cursor - 1); // return the inserted character + the end
+
+        setChanged();
+        notifyObservers();
     }
 
     public void insert(char c) {
@@ -55,55 +56,64 @@ public class Line {
         chars[this.cursor] = c;
         this.line = String.valueOf(chars);
         this.cursor++;
+
+        setChanged();
+        notifyObservers();
     }
 
     public void erase() {
         if (this.cursor > 0) {
-
-            if (this.cursor == this.line.length()) {
-                // Just remove one from the end
-                this.line = this.line.substring(0, this.line.length() - 1);
-            } else {
-                // When deleting, we have to append the remaining right portion
-                String end = this.line.substring(this.cursor, this.line.length());
-                this.line = this.line.substring(0, this.cursor - 1) + end;
-            }
-
-            this.cursor--;
+            String end = this.line.substring(this.cursor);
+            this.line = this.line.substring(0, this.cursor - 1) + end;
+            this.cursor --;
+            setChanged();
+            notifyObservers(Keys.BKSP);
         }
+
     }
-    public void delete(){
-        if(this.cursor<this.length()){
-            String end = this.line.substring(this.cursor,this.length());
-            this.line = this.line.substring(0, this.cursor -1) + end;
- 
-        }else{
+
+    public void delete() {
+        if (this.cursor < this.length()) {
+            String end = this.line.substring(this.cursor, this.length());
+            this.line = this.line.substring(0, this.cursor - 1) + end;
+            this.cursor --;
+
+        } else {
             System.out.print("\007");
         }
+        setChanged();
+        notifyObservers(Keys.DEL);
     }
 
-    public boolean decreaseCursor() {
+    public void decreaseCursor() {
         if (cursor > 0) {
             this.cursor--;
-            return true;
+            setChanged();
+            notifyObservers(Keys.LEFT);
         }
-        return false;
     }
 
-    public boolean increaseCursor() {
-        // Boolean to avoid infinite right scroll
+    public void increaseCursor() {
         if (cursor < line.length()) {
             this.cursor++;
-            return true;
+            setChanged();
+            notifyObservers(Keys.RIGHT);
         }
-        return false;
     }
 
     public void goToHome() {
         this.cursor = 0;
+        setChanged();
+        notifyObservers(Keys.HOME);
     }
 
     public void goToEnd() {
         this.cursor = this.line.length();
+        setChanged();
+        notifyObservers(Keys.END);
+    }
+
+    public String toString() {
+        return this.line;
     }
 }
