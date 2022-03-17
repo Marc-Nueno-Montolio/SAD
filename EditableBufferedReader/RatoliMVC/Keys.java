@@ -16,5 +16,5 @@ public class Keys {
                 TERMINATE = -6,
                 DEL = -7,
                 MB1_CLICK_DOWN = -8,
-                CLICK_UP = -9;
+                CLICK_UP = -10;
 }
