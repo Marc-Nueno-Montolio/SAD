@@ -73,10 +73,10 @@ public class Line {
         }
     }
     public void delete(){
-        if(this.cursor<this.length()){
-            String end = this.line.substring(this.cursor,this.length());
-            this.line = this.line.substring(0, this.cursor -1) + end;
- 
+        if(this.cursor < this.length()){
+            String end = this.line.substring(this.cursor + 1, this.length());
+            this.line = this.line.substring(0, this.cursor) + end;
+          
         }else{
             System.out.print("\007");
         }
