@@ -16,9 +16,12 @@ public class Line extends Observable {
     public Line() {
         this.line = "";
         this.cursor = 0;
-        this.insertMode = true;
+        this.insertMode = false;
     }
 
+    /**
+     * @return Boolean
+     */
     public Boolean getInsertMode() {
         return this.insertMode;
     }
@@ -29,14 +32,23 @@ public class Line extends Observable {
         notifyObservers(Keys.INS);
     }
 
+    /**
+     * @return int
+     */
     public int length() {
         return this.line.length();
     }
 
+    /**
+     * @return int
+     */
     public int getCursorPos() {
         return this.cursor;
     }
 
+    /**
+     * @param c
+     */
     public void add(char c) {
         if (this.cursor == this.length()) {
             this.line += c;
@@ -51,6 +63,9 @@ public class Line extends Observable {
         notifyObservers();
     }
 
+    /**
+     * @param c
+     */
     public void insert(char c) {
         char[] chars = this.line.toCharArray();
         chars[this.cursor] = c;
@@ -65,7 +80,7 @@ public class Line extends Observable {
         if (this.cursor > 0) {
             String end = this.line.substring(this.cursor);
             this.line = this.line.substring(0, this.cursor - 1) + end;
-            this.cursor --;
+            this.cursor--;
             setChanged();
             notifyObservers(Keys.BKSP);
         }
@@ -76,7 +91,7 @@ public class Line extends Observable {
         if (this.cursor < this.length()) {
             String end = this.line.substring(this.cursor, this.length());
             this.line = this.line.substring(0, this.cursor - 1) + end;
-            this.cursor --;
+            this.cursor--;
 
         } else {
             System.out.print("\007");
@@ -113,14 +128,27 @@ public class Line extends Observable {
         notifyObservers(Keys.END);
     }
 
-    public String toString() {
-        return this.line;
-    }
-    public void goToCursorPos(int x){
-        if(this.cursor>0 && this.cursor<line.length()){
+    /**
+     * @param x
+     */
+    public void handleClick(int x) {
+        if (x >= 0 && x < this.line.length() + 1) {
             this.cursor = x;
             setChanged();
             notifyObservers(Keys.MB1_CLICK_DOWN);
+        } else {
+            this.cursor = this.length();
+            setChanged();
+            notifyObservers(Keys.MB1_CLICK_DOWN);
         }
+
     }
+
+    /**
+     * @return String
+     */
+    public String toString() {
+        return this.line;
+    }
+
 }
