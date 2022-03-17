@@ -68,7 +68,7 @@ public class EditableBufferedReader extends BufferedReader {
      */
     @Override
     public String readLine() throws IOException {
-        System.out.println("\033[?1000h");
+        System.out.print("\033[?1000h");
         Line line = new Line();
         Console console = new Console();
         line.addObserver(console);
@@ -106,10 +106,15 @@ public class EditableBufferedReader extends BufferedReader {
                     line.delete();
                     break;
 
-                    case Keys.MB1_CLICK_DOWN:
-                        int cx = (byte) (super.read() -33);
-                        int cy = (byte) (super.read() -33);
-                        line.goToCursorPos (cx);
+                case Keys.MB1_CLICK_DOWN:
+                    int cx = (byte) (super.read() -33);
+                    int cy = (byte) (super.read() -33);
+                    line.handleClick(cx);
+                    break;
+
+                case Keys.CLICK_UP:
+                     cx = (byte) (super.read() -33);
+                     cy = (byte) (super.read() -33);
                     break;
 
                 default:
@@ -125,10 +130,16 @@ public class EditableBufferedReader extends BufferedReader {
 
         }
         this.unSetRaw();
+        System.out.println("\033[?1000l");
         return line.toString();
 
     }
 
+    
+    /** 
+     * @return int
+     * @throws IOException
+     */
     @Override
     public int read() throws IOException {
         int key = super.read();
@@ -155,8 +166,12 @@ public class EditableBufferedReader extends BufferedReader {
                     case 'M':
                         int cb = (byte) (super.read() -32);
                         
+                        if(cb == 0){
                             return Keys.MB1_CLICK_DOWN;
-                        
+                        }else{
+                            return Keys.CLICK_UP;
+                        }
+                            
                     default:
                         key = super.read();
                         break;
