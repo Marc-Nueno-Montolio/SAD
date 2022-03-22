@@ -12,6 +12,7 @@ public class Console implements Observer {
             ERASE_ONE_LEFT = MOVE_LEFT + ERASE,
             ERASE_LINE = ESCAPE + "[2K\r",
             HOME = ESCAPE + "[1G";
+            //END = ESCAPE + "[" + (line.length() - line.getCursorPos()) + "C";
 
     @Override
     public void update(Observable o, Object arg) {
@@ -35,8 +36,8 @@ public class Console implements Observer {
                     System.out.print(HOME);
                     break;
 
-                case Keys.END:                   
-                        System.out.print(ESCAPE + "[" + (line.length() - line.getCursorPos()) + "C");                
+                case Keys.END:                  
+                        System.out.print(ESCAPE + "[" + (line.length() - line.getCursorPos()) + "C");             
                     break;
                 case Keys.INS:
                     break;

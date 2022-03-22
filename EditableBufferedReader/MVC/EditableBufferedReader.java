@@ -96,12 +96,14 @@ public class EditableBufferedReader extends BufferedReader {
 
                 case Keys.END:
                     line.goToEnd();
+                    
                     break;
 
                 case Keys.INS:
                     line.toggleInsertMode();
                     break;
 
+                
                 case Keys.DEL:
                     line.delete();
                     break;
@@ -140,6 +142,7 @@ public class EditableBufferedReader extends BufferedReader {
                         return Keys.HOME;
                     case 'F':
                         return Keys.END;
+
                     case '2':
                         super.read();
                         return Keys.INS;

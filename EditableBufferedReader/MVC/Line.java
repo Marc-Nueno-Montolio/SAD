@@ -74,8 +74,8 @@ public class Line extends Observable {
 
     public void delete() {
         if (this.cursor < this.length()) {
-            String end = this.line.substring(this.cursor, this.length());
-            this.line = this.line.substring(0, this.cursor - 1) + end;
+            String end = this.line.substring(this.cursor + 1, this.length());
+            this.line = this.line.substring(0, this.cursor) + end;
             this.cursor --;
 
         } else {
@@ -108,9 +108,9 @@ public class Line extends Observable {
     }
 
     public void goToEnd() {
-        this.cursor = this.line.length();
         setChanged();
         notifyObservers(Keys.END);
+        this.cursor = this.line.length();
     }
 
     public String toString() {
