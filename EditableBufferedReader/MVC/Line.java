@@ -107,9 +107,9 @@ public class Line extends Observable {
     }
 
     public void goToEnd() {
-        this.cursor = this.line.length();
         setChanged();
         notifyObservers(Keys.END);
+        this.cursor = this.line.length();
     }
 
     public String toString() {
