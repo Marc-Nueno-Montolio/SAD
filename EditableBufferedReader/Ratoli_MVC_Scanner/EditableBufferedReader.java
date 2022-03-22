@@ -142,6 +142,8 @@ public class EditableBufferedReader extends BufferedReader {
      */
     @Override
     public int read() throws IOException {
+
+        Sc
         int key = super.read();
         if (key == Keys.ESCAPE) {
             // It is a escape key sequence
@@ -149,28 +151,6 @@ public class EditableBufferedReader extends BufferedReader {
             if (key == '[') {
                 key = super.read();
                 switch (key) {
-                    case 'D': // left
-                        return Keys.LEFT;
-                    case 'C': // left
-                        return Keys.RIGHT;
-                    case 'H':
-                        return Keys.HOME;
-                    case 'F':
-                        return Keys.END;
-                    case '2':
-                        super.read();
-                        return Keys.INS;
-                    case '3':
-                        super.read();
-                        return Keys.DEL;
-                    case 'M':
-                        int cb = (byte) (super.read() -32);
-                        
-                        if(cb == 0){
-                            return Keys.MB1_CLICK_DOWN;
-                        }else{
-                            return Keys.CLICK_UP;
-                        }
                             
                     default:
                         key = super.read();
@@ -178,6 +158,7 @@ public class EditableBufferedReader extends BufferedReader {
                 }
             }
         } else if (key == Keys.EXIT || key == Keys.EOT) {
+            System.out.println("\033[?1000l");
             this.unSetRaw(); // Avoid leaving the terminal in Raw mode
             System.exit(0);
         }

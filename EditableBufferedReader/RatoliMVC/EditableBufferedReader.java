@@ -113,7 +113,7 @@ public class EditableBufferedReader extends BufferedReader {
                     break;
 
                 case Keys.CLICK_UP:
-                     cx = (byte) (super.read() -33);
+                     cx =  (super.read() -33);
                      cy = (byte) (super.read() -33);
                     break;
 
