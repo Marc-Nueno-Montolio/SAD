@@ -1,9 +1,10 @@
 # SAD
 Les pràctiques de l'assignatura són tres:
 
-EditableBufferedReader
-Aplicació Client/Servidor d'un Xat. Client textual
-Aplicació Client/Servidor d'un Xat. Client gràfic amb Swing
+- EditableBufferedReader
+- Aplicació Client/Servidor d'un Xat. Client textual
+- Aplicació Client/Servidor d'un Xat. Client gràfic amb Swing
+
 La primera pràctica és un miniprojecte en el que es treballa el patró MVC, parsing de seqüències d'escape d'un emulador de terminal i execució de programes externs des de JAVA
 
 El patró MVC s'explica a classe de teoria amb exemples més simples que es troben a Slide
