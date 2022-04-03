@@ -25,7 +25,7 @@ public class Console implements Observer {
         // update the console when the observed object changes
         if (arg != null) {
             switch ((int) arg) {
-                case Keys.MB1_CLICK_DOWN:
+                case Keys.MB1_CLICK:
                     System.out.print(ESCAPE + "[" + (line.getCursorPos() + 1) + "G");
                     break;
                 case Keys.BKSP:

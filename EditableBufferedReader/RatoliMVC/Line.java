@@ -88,12 +88,11 @@ public class Line extends Observable {
     }
 
     public void delete() {
-        if (this.cursor < this.length()) {
-            String end = this.line.substring(this.cursor, this.length());
-            this.line = this.line.substring(0, this.cursor - 1) + end;
-            this.cursor--;
-
-        } else {
+        if(this.cursor < this.length()){
+            String end = this.line.substring(this.cursor + 1, this.length());
+            this.line = this.line.substring(0, this.cursor) + end;
+          
+        }else{
             System.out.print("\007");
         }
         setChanged();
@@ -123,9 +122,9 @@ public class Line extends Observable {
     }
 
     public void goToEnd() {
-        this.cursor = this.line.length();
         setChanged();
         notifyObservers(Keys.END);
+        this.cursor = this.line.length();
     }
 
     /**
@@ -135,11 +134,11 @@ public class Line extends Observable {
         if (x >= 0 && x < this.line.length() + 1) {
             this.cursor = x;
             setChanged();
-            notifyObservers(Keys.MB1_CLICK_DOWN);
+            notifyObservers(Keys.MB1_CLICK);
         } else {
             this.cursor = this.length();
             setChanged();
-            notifyObservers(Keys.MB1_CLICK_DOWN);
+            notifyObservers(Keys.MB1_CLICK);
         }
 
     }

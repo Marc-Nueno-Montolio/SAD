@@ -68,7 +68,7 @@ public class EditableBufferedReader extends BufferedReader {
      */
     @Override
     public String readLine() throws IOException {
-        System.out.print("\033[?1000h");
+        System.out.print("\033[?1000;1006h");
         Line line = new Line();
         Console console = new Console();
         line.addObserver(console);
@@ -106,15 +106,7 @@ public class EditableBufferedReader extends BufferedReader {
                     line.delete();
                     break;
 
-                case Keys.MB1_CLICK_DOWN:
-                    int cx = (byte) (super.read() -33);
-                    int cy = (byte) (super.read() -33);
-                    line.handleClick(cx);
-                    break;
-
-                case Keys.CLICK_UP:
-                     cx =  (super.read() -33);
-                     cy = (byte) (super.read() -33);
+                case Keys.MB1_CLICK:
                     break;
 
                 default:
@@ -163,15 +155,25 @@ public class EditableBufferedReader extends BufferedReader {
                     case '3':
                         super.read();
                         return Keys.DEL;
-                    case 'M':
-                        int cb = (byte) (super.read() -32);
+
+                    case '<':
                         
-                        if(cb == 0){
-                            return Keys.MB1_CLICK_DOWN;
+                        int value = super.read();
+                        if(value == '0'){
+                            while(value != 'm' ){
+                                value = super.read();
+                            }  
+                            return Keys.MB1_CLICK;
                         }else{
-                            return Keys.CLICK_UP;
-                        }
                             
+                            while(value != 'M' ){
+                                value = super.read();
+                            }
+                            
+                        }
+                        return ' ';
+                        
+
                     default:
                         key = super.read();
                         break;
