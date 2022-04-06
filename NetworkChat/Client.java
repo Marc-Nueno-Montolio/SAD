@@ -18,7 +18,6 @@ public class Client {
                         sc.println(line);
                     }
                     // Al xat hauriem de fer el Close for write
-
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -29,6 +28,7 @@ public class Client {
         // Output Thread
         new Thread() {
             public void run() {
+                System.out.print("Please insert your nick: ");
                 String line;
                 while ((line = sc.readLine()) != null) {
                     // Fem echo del que hem rebut
