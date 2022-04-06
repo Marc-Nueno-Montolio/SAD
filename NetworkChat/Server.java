@@ -28,7 +28,7 @@ public class Server {
                         // We have to broadcast the messages to everyone except us
                         for (String clientNick : Server.getConnectedNicks()) {
                             if (!nick.equals(clientNick)) {
-                                Server.get(clientNick).println("\u001B[1m" + nick + ":\u001B[0m " + line);
+                                Server.get(clientNick).println( nick + ": " + line);
                             }
                         }
 
