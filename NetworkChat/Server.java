@@ -17,52 +17,56 @@ public class Server {
             MySocket s = ss.accept(); // Assignem el socket a un MySocket
 
             // For each new socket, we create a new thread:
-             new Thread() {
+            new Thread() {
                 public void run() {
                     String line, nick;
                     nick = s.readLine();
-                    Server.connect(nick,s);
-                    System.out.println("User " + nick +" joined the chat room");
+                    Server.connect(nick, s);
 
                     // While we can write messages, we have to broadcast it to connected clients
                     while ((line = s.readLine()) != null) {
-                        // We  have to broadcast the messages to everyone except us
+                        // We have to broadcast the messages to everyone except us
                         for (String clientNick : Server.getConnectedNicks()) {
-                            if(!nick.equals(clientNick)){
-                                Server.get(clientNick).println("\u001B[1m" + nick +":\u001B[0m "+ line);
+                            if (!nick.equals(clientNick)) {
+                                Server.get(clientNick).println("\u001B[1m" + nick + ":\u001B[0m " + line);
                             }
                         }
-                        
+
                     }
                     // Close connection
+
+                    Server.disconnect(nick);
+
                 }
             }.start();
 
         }
     }
 
-
-    public static  MySocket connect(String nick, MySocket s) {
+    public static MySocket connect(String nick, MySocket s) {
         w.lock();
         try {
             connections.put(nick, s);
+            System.out.println("User " + nick + " joined the chat room");
             return s;
         } finally {
             w.unlock();
         }
     }
 
-    public static  MySocket disconnect(String nick, MySocket s) {
+    public static MySocket disconnect(String nick) {
         w.lock();
         try {
             // Close socket
-            connections.remove(nick, s);
+            MySocket s = connections.get(nick);
+            s.shutdownInput();
+            connections.remove(nick);
+            System.out.println("User " + nick + " left the chat room");
             return s;
         } finally {
             w.unlock();
         }
     }
-
 
     public static String[] getConnectedNicks() {
         r.lock();

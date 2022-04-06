@@ -40,4 +40,14 @@ public class MySocket extends Socket {
         this.pw.println(line);
     }
 
+    @Override
+    public void shutdownInput(){
+        try {
+            super.shutdownInput();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
 }
