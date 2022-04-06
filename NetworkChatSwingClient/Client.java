@@ -1,43 +1,49 @@
+import java.awt.LayoutManager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.UnknownHostException;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+
+import java.awt.BorderLayout;
 
 public class Client {
-    public static void main(String[] args) throws UnknownHostException, IOException {
-        MySocket sc = new MySocket(args[0], Integer.parseInt(args[1]));
-        // Input Thread
-        new Thread() {
-            public void run() {
-                String line;
-                BufferedReader kbd = new BufferedReader(new InputStreamReader(System.in));
-                try {
-                    while ((line = kbd.readLine()) != null) {
-                        // Fem echo del que hem rebut
-                        sc.println(line);
-                    }
-                    // Al xat hauriem de fer el Close for write
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+    static final String APP_NAME = "Xat SAD";
 
-            }
-        }.start();
+    public static void main(String[] args) {
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        listModel.addElement("Marc: hello");
 
-        // Output Thread
-        new Thread() {
-            public void run() {
-                System.out.print("Please insert your nick: ");
-                String line;
-                while ((line = sc.readLine()) != null) {
-                    // Fem echo del que hem rebut
-                    System.out.println(line);
-                }
-                // Al xat hauriem de fer el Close for write
+        JList messageList = new JList<>(listModel);
 
-            }
-        }.start();
+        JFrame frame = new JFrame(APP_NAME);
+
+        JPanel panel = new JPanel(new BorderLayout());
+
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setViewportView(messageList);
+        messageList.setLayoutOrientation(JList.VERTICAL);
+        
+
+        JPanel writingBar = new JPanel(new BorderLayout());
+        JTextField textField = new JTextField(); 
+        JButton sendBtn = new JButton("SEND");
+        
+        writingBar.add(textField, BorderLayout.CENTER);
+        writingBar.add(sendBtn, BorderLayout.EAST);
+        
+        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(writingBar, BorderLayout.SOUTH);
+        frame.add(panel);
+        frame.setSize(200, 300);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
 
     }
 }
