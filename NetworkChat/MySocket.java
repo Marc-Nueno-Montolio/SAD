@@ -1,12 +1,10 @@
-package Sockets;
-
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.Reader;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketImpl;
 import java.net.UnknownHostException;
 
 public class MySocket extends Socket {
@@ -16,23 +14,30 @@ public class MySocket extends Socket {
 
     public MySocket(String host, int port) throws UnknownHostException, IOException {
         super(host, port);
-        // Initialize input & output streams:
+        this.startStreams();
+    }
+
+    public MySocket(SocketImpl socketImpl) throws IOException {
+        super(socketImpl);
+    }
+
+    public void startStreams() throws IOException {
         this.pw = new PrintWriter(this.getOutputStream(), this.autoFlush);
         this.br = new BufferedReader(new InputStreamReader(this.getInputStream()));
     }
-    
-    public String readLine(){
+
+    public String readLine() {
         try {
             return this.br.readLine();
         } catch (IOException e) {
-            
+
             e.printStackTrace();
         }
         return "";
     }
 
-    public void println(String line){
+    public void println(String line) {
         this.pw.println(line);
     }
-    
+
 }
