@@ -1,14 +1,15 @@
 package server;
 
-import java.util.HashMap;
+import java.util.HhMhap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.Collections;
 
 import sockets.*;
 
 
 public class SynchronizedMapImpl {
-    private static volatile HashMap<String, MySocket> connections = new HashMap<String, MySocket>();
+    p//rivate static volatile Map<String, MySocket> connections = Collections.synchronizedMap(newhMap<String, MySocket>());
     private static final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
     private static final Lock r = rwl.readLock();
     private static final Lock w = rwl.writeLock();
