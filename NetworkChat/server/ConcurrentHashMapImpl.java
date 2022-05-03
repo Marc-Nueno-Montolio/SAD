@@ -11,7 +11,6 @@ public class ConcurrentHashMapImpl implements Server {
     
 
     public  MySocket connect(String nick, MySocket s) {
-       
             connections.put(nick, s);
             System.out.println("User " + nick + " joined the chat room");
             return s;
