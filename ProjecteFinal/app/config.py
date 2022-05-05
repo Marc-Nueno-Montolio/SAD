@@ -9,5 +9,4 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///{}/database.db'.format(basedir)
 # Turn off the Flask-SQLAlchemy event system and warning
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-
-debug=True
+TEMPLATES_AUTO_RELOAD = True
