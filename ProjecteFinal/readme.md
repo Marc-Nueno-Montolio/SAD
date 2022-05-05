@@ -1,0 +1,1 @@
+https://python.plainenglish.io/flask-crud-application-using-mvc-architecture-3b073271274f

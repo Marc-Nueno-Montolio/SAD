@@ -15,7 +15,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import java.awt.BorderLayout;
-
 public class Client {
     static final String APP_NAME = "Xat SAD";
 
