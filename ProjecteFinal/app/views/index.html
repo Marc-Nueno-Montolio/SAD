@@ -76,6 +76,18 @@
     <h1 class="mt-5">Projecte SAD</h1>
 
     <p>Prova de connexió base de dades Es mostren els usuaris de la base de dades...</p>
+
+    <button class="btn btn-primary" type="button">
+      
+      <span class="sr-only">Buscar</span>
+    </button>
+
+    <button class="btn btn-primary" type="button" disabled>
+      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      <span class="sr-only">Buscant...</span>
+    </button>
+    
+
     <table class="table table-hover">
       <thead>
          <tr>
@@ -86,13 +98,7 @@
       </thead>
       
       <tbody>
-         {% for user in users %}
-            <tr>
-               <td>{{ user.id }}</td>
-               <td>{{ user.name }}</td>
-               <td>{{ user.addr }}</td>
-            </tr>
-         {% endfor %}
+         
       </tbody>
    </table>
     
