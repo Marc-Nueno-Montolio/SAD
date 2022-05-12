@@ -133,6 +133,8 @@ class Category(db.Model):
     __tablename__ = 'category'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
+    description = db.Column(db.String)
+    photo_url = db.Column(db.String)
     # A category can have many products
     db.relationship('Product', backref='category', lazy=True)
 

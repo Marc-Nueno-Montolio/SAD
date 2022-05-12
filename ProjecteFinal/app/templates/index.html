@@ -1,7 +1,30 @@
 {% extends "base.html" %}
 
 {% block app_content %}
+    
     <h1>Benvingut</h1>
+
+    {% if categories %}
+
+    <div class="row">
+        {% for cat in categories %}
+        <div class="col md-3 mb-5" style="flex-wrap: wrap;">
+            <div class="card" style="width: 18rem;">
+                <img class="cover-img" src="{{ cat.photo_url }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">{{ cat.name }}</h5>
+                  {% if cat.description %}
+                    <p class="card-text">{{ cat.description }}</p>
+                  {% endif %}
+                  <a href="{{ url_for('main.category', cat=cat.name)}}" class="btn btn-primary">Llogar {{ cat.name}}</a>
+                </div>
+              </div>
+        </div>
+    
+        {% endfor %}
+    </div>
+    
+    {% endif %}
     <p>Els productes es mostren aquí per categoria...</p>
     
 

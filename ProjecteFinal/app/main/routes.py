@@ -6,7 +6,7 @@ from flask_babel import _, get_locale
 from langdetect import detect, LangDetectException
 from app import db
 from app.main.forms import EditProfileForm, EmptyForm
-from app.models import User
+from app.models import *
 from app.translate import translate
 from app.main import bp
 
@@ -21,10 +21,14 @@ def before_request():
 @bp.route('/', methods=['GET', 'POST'])
 @bp.route('/index', methods=['GET', 'POST'])
 def index():
+    categories = Category.query.all()
+    return render_template('index.html', categories=categories)
 
-    return render_template('index.html', title=_('Home'), 
-                           posts=[], next_url='#',
-                           prev_url='#')
+@bp.route('/category/<cat>', methods=['GET', 'POST'])
+def category(cat):
+    category = Category.query.filter_by(name=cat).first()
+    products = Product.query.filter_by(category_id=category.id).all()
+    return render_template('category.html', category=category, products=products)
 
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])

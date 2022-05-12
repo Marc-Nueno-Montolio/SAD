@@ -1,4 +1,4 @@
 FLASK_APP=microblog.py
-DEBUG=TRUE
+DEBUG=True
 FLASK_ENV=development
 TEMPLATES_AUTO_RELOAD = True
