@@ -32,8 +32,10 @@
       <button type="submit" class="btn btn-primary">Entrar</button>
     </form>
   </div>
+
+  <div class="col-md-6" style="padding-left: 0px;  padding-right: 0px;">
+    <img class="img-fluid" src="https://static.vecteezy.com/system/resources/thumbnails/004/269/544/small_2x/young-man-riding-on-skis-masked-winter-flat-illustration-in-cartoon-style-winter-sport-activities-illustration-winter-landscape-vector.jpg" alt="">
 </div>
-<br />
 <p>
   Ets un nou usuari? <a href="{{ url_for('auth.register') }}">Enregistra't</a>
 </p>
@@ -41,4 +43,7 @@
   Has oblidat la contrasenya?
   <a href="{{ url_for('auth.reset_password_request') }}">Restaura'la</a>
 </p>
+</div>
+
+
 {% endblock %}

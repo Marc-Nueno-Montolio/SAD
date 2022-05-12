@@ -15,7 +15,6 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
-    
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -45,6 +44,78 @@ class User(UserMixin, db.Model):
         except:
             return
         return User.query.get(id)
+
+
+# Helper table
+
+class Product(db.Model):
+    __tablename__ = 'product'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    price_per_day = db.Column(db.Float)
+    photo_url = db.Column(db.String)
+    # A product belongs to a category
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'),
+        nullable=True)
+
+    # Get the bookings that contain this product
+    def get_bookings(self):
+        results =  Products.query.filter_by(product_id =self.id).all()
+        bookings = []
+        for result in results:
+            bookings.append(result.booking_id)
+        return bookings
+
+    # Get the dates in which the product is booked
+    def get_booked_dates(self):
+        results =  Products.query.filter_by(product_id =self.id).all()
+        dates = []
+        for result in results:
+            booking = Booking.query.filter_by(id=result.booking_id).first()
+            dates.append(booking.startDate)
+        return dates
+
+class Products(db.Model):
+    __tablename__ = 'products'
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'), primary_key=True)
+    booking_id = db.Column(db.Integer, db.ForeignKey('booking.id'), primary_key=True)
+    
+class Booking (db.Model):
+    __tablename__ = 'booking'
+    id = db.Column(db.Integer, primary_key=True)
+    code = db.Column(db.String)
+    startDate = db.Column(db.DateTime, default=datetime.utcnow)
+    endDate = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # A booking should be inside an order
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
+
+    # A booking can have various products on the same dates
+    products = db.relationship('Product', secondary=Products.__tablename__, lazy='subquery',
+        backref=db.backref('bookings', lazy=True))
+
+    def __repr__(self):
+        return '<Booking code: %s, startDate: %s>' % (self.code, self.startDate.strftime("%m/%d/%Y"))
+    
+class Order(db.Model):
+    __tablename__ = 'order'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    created_at = db.Column(db.DateTime())
+    status = db.Column(db.String)
+
+    # A order can have many bookings
+    bookings = db.relationship('Booking', backref='order',
+                                lazy='dynamic')
+    
+
+class Category(db.Model):
+    __tablename__ = 'category'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    # A category can have many products
+    db.relationship('Product', backref='category', lazy=True)
+
 
 
 @login.user_loader
