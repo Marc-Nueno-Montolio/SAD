@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from hashlib import md5
 from time import time
 from flask import current_app
@@ -72,7 +72,16 @@ class Product(db.Model):
         dates = []
         for result in results:
             booking = Booking.query.filter_by(id=result.booking_id).first()
-            dates.append(booking.startDate)
+
+            # Copied from https://stackoverflow.com/questions/7274267/print-all-day-dates-between-two-dates
+            start_date = booking.startDate
+            end_date = booking.endDate
+            delta = end_date - start_date   # returns timedelta
+
+            for i in range(delta.days + 2):
+                day = start_date + timedelta(days=i)
+                dates.append(day)
+
         return dates
 
 class Products(db.Model):
@@ -97,6 +106,17 @@ class Booking (db.Model):
     def __repr__(self):
         return '<Booking code: %s, startDate: %s>' % (self.code, self.startDate.strftime("%m/%d/%Y"))
     
+    def get_booked_dates(self):
+        dates = []
+        # Copied from https://stackoverflow.com/questions/7274267/print-all-day-dates-between-two-dates
+        start_date = self.startDate
+        end_date = self.endDate
+        delta = end_date - start_date   # returns timedelta
+        for i in range(delta.days + 2):
+            day = start_date + timedelta(days=i)
+            dates.append(day)
+        return dates
+
 class Order(db.Model):
     __tablename__ = 'order'
     id = db.Column(db.Integer, primary_key=True)
