@@ -1,0 +1,38 @@
+{% extends "base.html" %} {% block app_content %}
+<h1>{{ _('Edit Profile') }}</h1>
+<div class="row">
+  <div class="col-md-4">
+    <img
+      style="border-radius: 10px"
+      class="img-fluid"
+      src="{{ current_user.avatar('300') }}"
+      alt=""
+    />
+  </div>
+  <div class="col-md-8">
+    <form method="POST" action="">
+      {{ form.hidden_tag() }}
+      <div class="mb-3">
+        <label for="username" class="form-label">Nom d'usuari</label>
+        <input
+          name="username"
+          type="text"
+          class="form-control"
+          id="username"
+          aria-describedby="Nom d'usuari"
+          value="{{ current_user.username }}"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="about_me" class="form-label">Sobre mi</label>
+        <textarea name="about_me" class="form-control" id="about_me" rows="3">
+{{ current_user.about_me }}</textarea
+        >
+      </div>
+
+      <button type="submit" class="btn btn-primary">Guardar canvis</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

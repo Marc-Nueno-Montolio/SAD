@@ -1,55 +1,52 @@
-from flask_sqlalchemy import SQLAlchemy
-db = SQLAlchemy()
+from datetime import datetime
+from hashlib import md5
+from time import time
+from flask import current_app
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+import jwt
+from app import db, login
 
 
-class User(db.Model):
-    __tablename__ = 'user'
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    role = db.Column(db.String)
-    level = db.Column(db.String)
-    email = db.Column(db.String(120))
-    password = db.Column(db.String(120))
-    # One person can have many bookings
-    bookings = db.relationship('Booking', backref='user', lazy=True)
-
-class Booking (db.Model):
-    __tablename__ = 'booking'
-    id = db.Column(db.Integer, primary_key=True)
-    code = db.Column(db.String)
-    startDate = db.Column(db.DateTime())
-    endDate = db.Column(db.DateTime())
-    user_id =  db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    order = db.relationship('Order', backref='booking', lazy=True)
-    
-class Order(db.Model):
-    __tablename__ = 'order'
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    created_at = db.Column(db.DateTime())
-    status = db.Column(db.String)
-    # A booking has a order
-    booking_id = db.Column(db.Integer, db.ForeignKey('booking.id'),
-        nullable=False)
-    # A order has many products
+    username = db.Column(db.String(64), index=True, unique=True)
+    email = db.Column(db.String(120), index=True, unique=True)
+    password_hash = db.Column(db.String(128))
+    about_me = db.Column(db.String(140))
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     
 
-class Product(db.Model):
-    __tablename__ = 'product'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    price_per_day = db.Column(db.Float)
-    photo_url = db.Column(db.String)
-    # A product belongs to a category
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'),
-        nullable=True)
-    # A product can be in many orders 
+    def __repr__(self):
+        return '<User {}>'.format(self.username)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    def avatar(self, size):
+        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
+            digest, size)
 
 
-class Category(db.Model):
-    __tablename__ = 'category'
-    id = db.Column(db.Integer, primary_key=True)
-    # A category can have many products
-    db.relationship('Product', backref='category', lazy=True)
+    def get_reset_password_token(self, expires_in=600):
+        return jwt.encode(
+            {'reset_password': self.id, 'exp': time() + expires_in},
+            current_app.config['SECRET_KEY'], algorithm='HS256')
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            id = jwt.decode(token, current_app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['reset_password']
+        except:
+            return
+        return User.query.get(id)
 
 
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))

@@ -1,0 +1,64 @@
+{% extends 'base.html' %} {% block app_content %}
+<h1>Crea un nou compte</h1>
+<div class="row">
+  <div class="col-md-6">
+    <form method="POST" action="{{ url_for('auth.register')}}">
+      {{ form.csrf_token }}
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Correu electrònic</label>
+        <input
+          name="email"
+          type="email"
+          class="form-control"
+          id="email"
+          aria-describedby="Correu electrònic"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="username" class="form-label">Nom d'usuari</label>
+        <input
+          name="username"
+          type="text"
+          class="form-control"
+          id="username"
+          aria-describedby="Nom d'usuari"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Contrasenya</label>
+        <input
+          name="password"
+          type="password"
+          class="form-control"
+          id="password"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="password2" class="form-label">Contrasenya</label>
+        <input
+          name="password2"
+          type="password"
+          class="form-control"
+          id="password"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary">Enregistrar-me</button>
+      </div>
+      
+    </form>
+    <div class="col-md-6" style="padding-left: 0px;  padding-right: 0px;">
+        <img class="img-fluid" src="https://static.vecteezy.com/system/resources/thumbnails/004/269/544/small_2x/young-man-riding-on-skis-masked-winter-flat-illustration-in-cartoon-style-winter-sport-activities-illustration-winter-landscape-vector.jpg" alt="">
+    </div>
+  </div>
+
+  
+
+</div>
+<br>
+<p>
+    <a href="{{ url_for('auth.login') }}">Tornar</a>
+  </p>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>Benvingut</h1>
+    <p>Els productes es mostren aquí per categoria...</p>
+    
+
+    <nav aria-label="Post Pages">
+        <ul class="pagination">
+            <li class="page-item{% if not prev_url %} disabled{% endif %}">
+                <a class="page-link" href="{{ prev_url or '#' }}">
+                    <span aria-hidden="true">&larr;</span> {{ _('Productes més nous') }}
+                </a>
+            </li>
+            <li class="page-item{% if not next_url %} disabled{% endif %}">
+                <a class="page-link" href="{{ next_url or '#' }}">
+                    {{ _('Productes més antics') }} <span aria-hidden="true">&rarr;</span>
+                </a>
+            </li>
+        </ul>
+        
+      </nav>
+{% endblock %}
