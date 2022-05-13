@@ -88,6 +88,12 @@
               </li>
 
               {% else %}
+              <li class="nav-item end">
+                <a class="nav-link" data-bs-toggle="offcanvas" href="#cart" role="button" aria-controls="cart">
+                  Cistell
+                </a>
+              </li>
+
               <li class="nav-item">
                 <a
                   class="nav-link"
@@ -96,6 +102,9 @@
                   >El meu compte</a
                 >
               </li>
+
+              
+
               <li class="nav-item">
                 <a
                   class="nav-link"
@@ -106,7 +115,11 @@
               </li>
 
               {% endif %}
+
+              
+
             </ul>
+
             <form class="d-flex">
               <input
                 class="form-control me-2"
@@ -118,7 +131,12 @@
                 Cercar
               </button>
             </form>
+            
+            
+            
+            
           </div>
+          
         </div>
       </nav>
     </header>
@@ -153,6 +171,16 @@
       {# application content needs to be provided in the app_content block #} 
       {% block app_content %}{% endblock %}
     </main>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="cart" aria-labelledby="cart">
+      <div class="offcanvas-header">
+        
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        Bookings....
+      </div>
+    </div>
 
 
 

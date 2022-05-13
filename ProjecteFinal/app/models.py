@@ -58,6 +58,10 @@ class Product(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'),
         nullable=True)
 
+    def get_category_name(self):
+        cat = Category.query.filter_by(id=self.category_id).first()
+        return cat.name
+
     # Get the bookings that contain this product
     def get_bookings(self):
         results =  Products.query.filter_by(product_id =self.id).all()
@@ -121,7 +125,7 @@ class Order(db.Model):
     __tablename__ = 'order'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    created_at = db.Column(db.DateTime())
+    created_at = db.Column(db.DateTime(), default=datetime.utcnow)
     status = db.Column(db.String)
 
     # A order can have many bookings

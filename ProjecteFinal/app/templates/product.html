@@ -1,21 +1,41 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-
+<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{url_for('main.index')}}">Inici</a></li>
+      <li class="breadcrumb-item" aria-current="page"><a href="{{url_for('main.category', cat=product.get_category_name())}}">{{ product.get_category_name()}}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+    </ol>
+  </nav>
 <div class="row mt-4" style="height: 500px;">
     <div class="col-md-6">
-        <img class="img-fluid" src="{{ product.photo_url }}" alt="">
+        <img class="img-fluid" src="{{ product.photo_url }}" alt="" style="border-radius:10px">
     </div>
     <div class="col-md-6">
+      <form method="POST" action="{{ url_for('booking.create')}}">
+        {{ form.csrf_token }}
+        
+    
+      <div class="row">
         <h1>{{ product.name}} </h1>
         <hr>
-        Data de reserva: <input id="date-range" size="30" value="" style="display:none;">
+        Data de reserva: <input name="date" id="date-range" size="30" value="" style="">
         
         <div id="calendar" style="margin-top:10px;"></div>
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
 
-        Aquest producte està reservat:
-        {{ product.get_booked_dates()}}
-        <button type="button" onclick="loadDoc()">Request data</button>
+      <hr>
+      <div class="row mt-2">
+
+        <div class="col-md-6">
+          <button type="submit" class="btn btn-primary">Llogar <span class="oi oi-cart"></span></button>
+      </div>
+        
+    </form>
     </div>
 </div>
 
@@ -30,36 +50,62 @@
 
 <script>
 
+var $loading = $('.spinner-border').hide();
+$(document)
+  .ajaxStart(function () {
+    $loading.show();
+  })
+  .ajaxStop(function () {
+    $loading.hide();
+  });
+  
+    var bookedDates = []
     $(document).ready(function(){
         $.ajax({ url: "{{url_for('main.get_booked_dates', id=product.id)}}",
             context: document.body,
-            success: function(){
-               alert("done");
+            success: function(result){
+            result.forEach(date => {
+                date = formatDate(new Date(date))
+                bookedDates.push(date)
+            })
+
+            console.log(bookedDates)
+            // Set up availability calendar
+            const config = {
+                startOfWeek: 'monday',
+                language: 'cat',
+                inline:true,
+                alwaysOpen:true,
+                customTopBar: 'Primer i últim dia inclosos',
+                showShortcuts: false,
+                startDate: new Date(),
+        
+                beforeShowDay: function(t)
+                {
+                    var valid = bookedDates.includes(formatDate(t)) ? false : true
+                    var _class = '';
+                    var _tooltip = valid ? '' : 'Ho sentim, ja hi ha una reserva en aquest dia';
+                    return [valid,_class,_tooltip];
+                },
+                container:"#calendar"
+        
+            }
+            console.log('ok')
+            $('#date-range').dateRangePicker(config);
+                
             }
         });
     });
+    
+    function formatDate(date) {
+        return [
+          date.getDate(),
+          (date.getMonth() + 1) %12 ,
+          date.getFullYear()
+        ].join('/');
+      }
 
+    // Convert dates to string to get rid of time
 
-
-
-    const config = {
-        language: 'cat',
-        inline:true,
-        alwaysOpen:true,
-        customTopBar: 'Primer i últim dia inclosos',
-        showShortcuts: false,
-
-        beforeShowDay: function(t)
-        {
-            // Prevent already booked dates
-            var valid = true  
-            var _class = '';
-            var _tooltip = valid ? '' : 'Ho sentim, ja estan reservats aquest dia';
-            return [valid,_class,_tooltip];
-        },
-        container:"#calendar"
-
-    }
-    $('#date-range').dateRangePicker(config);
 </script>
 {% endblock %}

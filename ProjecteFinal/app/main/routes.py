@@ -1,4 +1,6 @@
+from curses.ascii import isdigit
 from datetime import datetime
+from app.booking.forms import BookingForm
 from flask import render_template, flash, redirect, url_for, request, g, \
     jsonify, current_app
 from flask_login import current_user, login_required
@@ -9,6 +11,7 @@ from app.main.forms import EditProfileForm, EmptyForm
 from app.models import *
 from app.translate import translate
 from app.main import bp
+from app.booking.forms import BookingForm
 
 
 @bp.before_app_request
@@ -26,16 +29,21 @@ def index():
 
 @bp.route('/category/<cat>', methods=['GET', 'POST'])
 def category(cat):
+    if(cat.isnumeric()):
+        category = Category.query.filter_by(id=cat).first()
+    else:
+        category = Category.query.filter_by(name=cat).first()   
+
     categories = Category.query.all()
-    category = Category.query.filter_by(name=cat).first()
     products = Product.query.filter_by(category_id=category.id).all()
     return render_template('category.html', categories=categories, category=category, products=products)
 
 @bp.route('/category/<cat>/<id>')
 def product(cat, id):
+    form = BookingForm()
     categories = Category.query.all()
     product = Product.query.filter_by(id=id).first()
-    return render_template('product.html', categories=categories, product=product)
+    return render_template('product.html', categories=categories, product=product, form=form)
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -53,9 +61,11 @@ def edit_profile():
     return render_template('edit_profile.html', title=_('Edit Profile'),
                            form=form)
 
-@bp.route('/get-booked-dates/<id>', methods=['POST'])
+@bp.route('/get-booked-dates/<id>', methods=['GET'])
 def get_booked_dates(id):
-    return jsonify({'data':'ok'})
+    product = Product.query.filter_by(id=id).first()
+    dates = product.get_booked_dates()
+    return jsonify(dates)
 
 
 @bp.route('/translate', methods=['POST'])

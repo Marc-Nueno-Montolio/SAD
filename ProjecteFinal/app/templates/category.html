@@ -23,8 +23,7 @@
             <img class="cover-img" src="{{ product.photo_url }}" alt="{{ product.name }}">
             <div class="card-body">
               <h5 class="card-title">{{product.name}}</h5>
-              <a href="{{ url_for('main.product', cat=category.name, id=product.id)}}" class="btn btn-secondary"><span class="oi oi-fullscreen-enter"></span></span></a>
-              <a href="#" class="btn btn-primary"><span class="oi oi-cart"></span></a>
+              <a href="{{ url_for('main.product', cat=category.name, id=product.id)}}" class="btn btn-secondary">Llogar <span class="oi oi-cart"></span></span></a>
             </div>
           </div>
           </div>

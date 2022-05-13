@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, session
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
 from app import db
@@ -25,7 +25,6 @@ def login():
             next_page = url_for('main.index')
         return redirect(next_page)
     return render_template('auth/login.html', title='Inici de sessió', form=form)
-
 
 @bp.route('/logout')
 def logout():
@@ -79,3 +78,18 @@ def reset_password(token):
         flash('Your password has been reset.')
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', form=form)
+
+
+ 
+@bp.route('/getsession')
+def getsession():
+    if 'Username' in session:
+        Username = session['Username']
+        return f"Welcome {Username}"
+    else:
+        return "Welcome Anonymous"
+ 
+@bp.route('/popsession')
+def popsession():
+    session.pop('Username',None)
+    return "Session Deleted"
