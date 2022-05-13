@@ -51,7 +51,7 @@ def create():
         
         db.session.add(order)
         db.session.commit()
-        flash('Hem afegit la reserva al teu cistell, no oblidis pagar-la abans de tancar sessió')
+        flash('Hem afegit la reserva al teu cistell')
         return redirect(url_for('main.index'))
     else:
         flash('Seleccioni unes dates')
@@ -63,10 +63,10 @@ def create():
 @login_required
 def delete(id):
 
-        booking = Booking.query.filter_by(id=1).first()
+        booking = Booking.query.filter_by(id=id).first()
         if(booking):
             db.session.delete(booking)
             db.session.commit()
-
+            flash('Hem esborrat la reserva')
         return redirect(url_for('main.index'))
         

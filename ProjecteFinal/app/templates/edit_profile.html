@@ -1,11 +1,15 @@
 {% extends "base.html" %} {% block app_content %}
-<h1>{{ _('Edit Profile') }}</h1>
-<div class="row">
+<h1>El meu compte</h1>
+<hr>
+
+<div class="row mt-3">
+  <h3>El meu perfil:</h3>
+
   <div class="col-md-4">
     <img
       style="border-radius: 10px"
       class="img-fluid"
-      src="{{ current_user.avatar('300') }}"
+      src="{{ current_user.avatar('200') }}"
       alt=""
     />
   </div>
@@ -33,6 +37,24 @@
 
       <button type="submit" class="btn btn-primary">Guardar canvis</button>
     </form>
+  </div>
+  <hr>
+  <div class="row mt-3">
+    <h3>El meu historial de compres:</h3>
+    {% if orders %}
+    <table class="table">
+      
+      {% for order in orders %} 
+      <tr>
+        {{order}}
+      REF: {{order.bookings.first().code.upper()}}
+    </tr>
+      {% endfor %}
+      
+      
+    </table>
+    
+    {% endif %}
   </div>
 </div>
 {% endblock %}

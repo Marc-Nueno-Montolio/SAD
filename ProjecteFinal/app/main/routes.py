@@ -48,6 +48,9 @@ def product(cat, id):
 @bp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
+    orders=current_user.orders
+
+
     form = EditProfileForm(current_user.username)
     if form.validate_on_submit():
         current_user.username = form.username.data
@@ -59,7 +62,7 @@ def edit_profile():
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', title=_('Edit Profile'),
-                           form=form)
+                           form=form, orders=orders)
 
 @bp.route('/get-booked-dates/<id>', methods=['GET'])
 def get_booked_dates(id):
