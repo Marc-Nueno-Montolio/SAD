@@ -15,6 +15,8 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    orders = db.relationship('Order', backref='user',
+                                lazy='dynamic')
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -131,6 +133,12 @@ class Order(db.Model):
     # A order can have many bookings
     bookings = db.relationship('Booking', backref='order',
                                 lazy='dynamic')
+    def get_total(self):
+        total = 0
+
+        for booking in self.bookings:
+            total += booking.products[0].price_per_day * (booking.endDate - booking.startDate).days 
+        return total
     
 
 class Category(db.Model):

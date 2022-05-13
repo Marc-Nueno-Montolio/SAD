@@ -15,12 +15,14 @@
     <div class="col-md-6">
       <form method="POST" action="{{ url_for('booking.create')}}">
         {{ form.csrf_token }}
-        
+
+        <input id="productId" name="productId" type="hidden" value="{{ product.id }}">
+
     
       <div class="row">
         <h1>{{ product.name}} </h1>
         <hr>
-        Data de reserva: <input name="date" id="date-range" size="30" value="" style="">
+        Data de reserva: <input name="date" id="date-range" size="30" value="" style="display:none;">
         
         <div id="calendar" style="margin-top:10px;"></div>
         <div class="spinner-border" role="status">

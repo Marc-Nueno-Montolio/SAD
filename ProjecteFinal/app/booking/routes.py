@@ -33,15 +33,18 @@ def create():
         order = Order.query.filter_by(user_id=current_user.id, status='pending').first()
         if(not order):
             order = Order(user_id=current_user.id, status='pending')
+
+        product = Product.query.filter_by(id=int(form.productId.data)).first()    
+        
         # parse dates
-        startDate = datetime.strptime(range.split(' to ')[0], '%Y-%m-%d')
-        endDate = datetime.strptime(range.split(' to ')[1], '%Y-%m-%d')
+        startDate = datetime.strptime(form.date.data.split(' to ')[0], '%Y-%m-%d')
+        endDate = datetime.strptime(form.date.data.split(' to ')[1], '%Y-%m-%d')
 
         str(uuid.uuid4())[:8]
         code=str(uuid.uuid4())[:8]
 
         booking = Booking(code=code, startDate=startDate, endDate=endDate)
-        
+        booking.products.append(product)
 
 
         order.bookings.append(booking)
@@ -49,9 +52,21 @@ def create():
         db.session.add(order)
         db.session.commit()
         flash('Hem afegit la reserva al teu cistell, no oblidis pagar-la abans de tancar sessió')
-        return render_template('index.html', categories=categories, session=session)
+        return redirect(url_for('main.index'))
     else:
         flash('Seleccioni unes dates')
         return redirect(request.referrer)
         
 
+
+@bp.route('/delete/<id>', methods=['GET','POST'])
+@login_required
+def delete(id):
+
+        booking = Booking.query.filter_by(id=1).first()
+        if(booking):
+            db.session.delete(booking)
+            db.session.commit()
+
+        return redirect(url_for('main.index'))
+        

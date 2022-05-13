@@ -13,20 +13,37 @@
       crossorigin="anonymous"
     />
 
-    
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic.min.css"
+      integrity="sha512-LeCmts7kEi09nKc+DwGJqDV+dNQi/W8/qb0oUSsBLzTYiBwxj0KBlAow2//jV7jwEHwSCPShRN2+IWwWcn1x7Q=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic.min.css" integrity="sha512-LeCmts7kEi09nKc+DwGJqDV+dNQi/W8/qb0oUSsBLzTYiBwxj0KBlAow2//jV7jwEHwSCPShRN2+IWwWcn1x7Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css"
+      integrity="sha512-UyNhw5RNpQaCai2EdC+Js0QL4RlVmiq41DkmCJsRV3ZxipG2L0HhTqIf/H9Hp8ez2EnFlkBnjRGJU2stW3Lj+w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css" integrity="sha512-UyNhw5RNpQaCai2EdC+Js0QL4RlVmiq41DkmCJsRV3ZxipG2L0HhTqIf/H9Hp8ez2EnFlkBnjRGJU2stW3Lj+w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-foundation.min.css"
+      integrity="sha512-FxxtEcqC30sYnk1uvdsbiBuRRAOjXQlSc/YPN5d9oVTBhsuqy3ptkPqkXinxwpscyhQz8I9BLa+EhlvxtwFTGg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-foundation.min.css" integrity="sha512-FxxtEcqC30sYnk1uvdsbiBuRRAOjXQlSc/YPN5d9oVTBhsuqy3ptkPqkXinxwpscyhQz8I9BLa+EhlvxtwFTGg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
     <style>
       .cover-img {
-      width: 100%; /* You can set the dimensions to whatever you want */
-      height: 200px;
-      object-fit: cover;
-  }</style>
+        width: 100%; /* You can set the dimensions to whatever you want */
+        height: 200px;
+        object-fit: cover;
+      }
+    </style>
 
     <title>SAD - Projecte Final</title>
   </head>
@@ -61,23 +78,30 @@
 
               {% if categories %}
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
                   Categories
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  
                   {% for cat in categories %}
-                    <li><a class="dropdown-item" href="{{ url_for('main.category', cat=cat.name) }}">{{ cat.name }}</a></li>
-                    
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="{{ url_for('main.category', cat=cat.name) }}"
+                      >{{ cat.name }}</a
+                    >
+                  </li>
+
                   {% endfor %}
-                  
                 </ul>
               </li>
-              {% endif %}
-
-
-
-              {% if current_user.is_anonymous %}
+              {% endif %} {% if current_user.is_anonymous %}
               <li class="nav-item">
                 <a
                   class="nav-link"
@@ -89,7 +113,13 @@
 
               {% else %}
               <li class="nav-item end">
-                <a class="nav-link" data-bs-toggle="offcanvas" href="#cart" role="button" aria-controls="cart">
+                <a
+                  class="nav-link"
+                  data-bs-toggle="offcanvas"
+                  href="#cart"
+                  role="button"
+                  aria-controls="cart"
+                >
                   Cistell
                 </a>
               </li>
@@ -103,8 +133,6 @@
                 >
               </li>
 
-              
-
               <li class="nav-item">
                 <a
                   class="nav-link"
@@ -115,9 +143,6 @@
               </li>
 
               {% endif %}
-
-              
-
             </ul>
 
             <form class="d-flex">
@@ -131,17 +156,12 @@
                 Cercar
               </button>
             </form>
-            
-            
-            
-            
           </div>
-          
         </div>
       </nav>
     </header>
 
-    <main role="main" class="container" style="padding:40px 15px 0;">
+    <main role="main" class="container" style="padding: 40px 15px 0">
       {% with messages = get_flashed_messages() %} {% if messages %} {% for
       message in messages %}
       <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -167,40 +187,62 @@
           aria-label="Close"
         ></button>
       </div>
-      {% endfor %} {% endif %} {% endwith %} 
-      {# application content needs to be provided in the app_content block #} 
-      {% block app_content %}{% endblock %}
+      {% endfor %} {% endif %} {% endwith %} {# application content needs to be
+      provided in the app_content block #} {% block app_content %}{% endblock %}
     </main>
-
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="cart" aria-labelledby="cart">
+    {% if current_user.is_authenticated%}
+    <div
+      class="offcanvas offcanvas-end"
+      tabindex="-1"
+      id="cart"
+      aria-labelledby="cart"
+    >
       <div class="offcanvas-header">
-        
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <h3>El teu cistell:</h3>
+
+        <button
+          type="button"
+          class="btn-close text-reset"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="offcanvas-body">
-        Bookings....
+        {%with bookings=current_user.orders.all()[0].bookings.all()%} 
+        {%for booking in bookings %}
+        <hr />
+        {% include '/booking/_booking.html'%} {% endfor %}
+        <hr />
+        {% endwith %}
+        <h4>Total: {{current_user.orders.filter_by(status='pending').first().get_total()}} €</h4>
+        <p>
+          <p><a href="#" class="btn btn-primary btn">Pagar i confirmar</a></p>
+        </p>
       </div>
+
+      {% endif%}
     </div>
 
-
-
-
-    
-    
-    
     {{ moment.include_moment() }} {{ moment.lang('ca') }}
 
+    <link
+      rel="stylesheet"
+      href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css"
+    />
+    <link rel="stylesheet" href="/resources/demos/style.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='dist/daterangepicker.min.css')}}"
+    />
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='dist/jquery.daterangepicker.min.js')}}"
+    ></script>
 
-  <link rel="stylesheet" href="{{ url_for('static', filename='dist/daterangepicker.min.css')}}">
-  <script type="text/javascript" src="{{ url_for('static', filename='dist/jquery.daterangepicker.min.js')}}"></script>
-
-  {% block scripts %}{% endblock %}
-
+    {% block scripts %}{% endblock %}
 
     <!-- Optional JavaScript; choose one of the two! -->
     <script>
@@ -223,11 +265,5 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
-
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
-    -->
   </body>
 </html>
