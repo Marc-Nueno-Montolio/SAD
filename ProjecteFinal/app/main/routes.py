@@ -26,10 +26,16 @@ def index():
 
 @bp.route('/category/<cat>', methods=['GET', 'POST'])
 def category(cat):
+    categories = Category.query.all()
     category = Category.query.filter_by(name=cat).first()
     products = Product.query.filter_by(category_id=category.id).all()
-    return render_template('category.html', category=category, products=products)
+    return render_template('category.html', categories=categories, category=category, products=products)
 
+@bp.route('/category/<cat>/<id>')
+def product(cat, id):
+    categories = Category.query.all()
+    product = Product.query.filter_by(id=id).first()
+    return render_template('product.html', categories=categories, product=product)
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -46,6 +52,10 @@ def edit_profile():
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', title=_('Edit Profile'),
                            form=form)
+
+@bp.route('/get-booked-dates/<id>', methods=['POST'])
+def get_booked_dates(id):
+    return jsonify({'data':'ok'})
 
 
 @bp.route('/translate', methods=['POST'])

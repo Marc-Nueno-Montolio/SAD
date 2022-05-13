@@ -16,17 +16,21 @@
     </div>
 
     <div class="col-md-10" style="background-color: rgba(196, 196, 196, 0.1)">Productes
-        
-        {% for product in products %}
+        <div class="row">
+            {% for product in products %}
+        <div class="col md-3 mb-5" style="flex-wrap: wrap;">
         <div class="card" style="width: 10rem;">
-            <img class="card-img-top" src="{{ product.photo_url }}" alt="{{ product.name }}">
+            <img class="cover-img" src="{{ product.photo_url }}" alt="{{ product.name }}">
             <div class="card-body">
               <h5 class="card-title">{{product.name}}</h5>
-              <a href="#" class="btn btn-secondary"><span class="oi oi-fullscreen-enter"></span></span></a>
+              <a href="{{ url_for('main.product', cat=category.name, id=product.id)}}" class="btn btn-secondary"><span class="oi oi-fullscreen-enter"></span></span></a>
               <a href="#" class="btn btn-primary"><span class="oi oi-cart"></span></a>
             </div>
           </div>
+          </div>
         {%endfor %}
+        </div>
+        
         <nav style="position: absolute; bottom: 30px;" aria-label="Post Pages">
             <ul class="pagination">
                 <li class="page-item{% if not prev_url %} disabled{% endif %}">

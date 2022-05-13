@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<div class="row mt-4" style="height: 500px;">
+    <div class="col-md-6">
+        <img class="img-fluid" src="{{ product.photo_url }}" alt="">
+    </div>
+    <div class="col-md-6">
+        <h1>{{ product.name}} </h1>
+        <hr>
+        Data de reserva: <input id="date-range" size="30" value="" style="display:none;">
+        
+        <div id="calendar" style="margin-top:10px;"></div>
+
+        Aquest producte està reservat:
+        {{ product.get_booked_dates()}}
+        <button type="button" onclick="loadDoc()">Request data</button>
+    </div>
+</div>
+
+    
+    
+{% endblock %}
+
+
+{% block scripts %} 
+
+
+
+<script>
+
+    $(document).ready(function(){
+        $.ajax({ url: "{{url_for('main.get_booked_dates', id=product.id)}}",
+            context: document.body,
+            success: function(){
+               alert("done");
+            }
+        });
+    });
+
+
+
+
+    const config = {
+        language: 'cat',
+        inline:true,
+        alwaysOpen:true,
+        customTopBar: 'Primer i últim dia inclosos',
+        showShortcuts: false,
+
+        beforeShowDay: function(t)
+        {
+            // Prevent already booked dates
+            var valid = true  
+            var _class = '';
+            var _tooltip = valid ? '' : 'Ho sentim, ja estan reservats aquest dia';
+            return [valid,_class,_tooltip];
+        },
+        container:"#calendar"
+
+    }
+    $('#date-range').dateRangePicker(config);
+</script>
+{% endblock %}

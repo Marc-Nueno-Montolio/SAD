@@ -13,6 +13,8 @@
       crossorigin="anonymous"
     />
 
+    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic.min.css" integrity="sha512-LeCmts7kEi09nKc+DwGJqDV+dNQi/W8/qb0oUSsBLzTYiBwxj0KBlAow2//jV7jwEHwSCPShRN2+IWwWcn1x7Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css" integrity="sha512-UyNhw5RNpQaCai2EdC+Js0QL4RlVmiq41DkmCJsRV3ZxipG2L0HhTqIf/H9Hp8ez2EnFlkBnjRGJU2stW3Lj+w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -56,6 +58,23 @@
                   >Inici</a
                 >
               </li>
+
+              {% if categories %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Categories
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  
+                  {% for cat in categories %}
+                    <li><a class="dropdown-item" href="{{ url_for('main.category', cat=cat.name) }}">{{ cat.name }}</a></li>
+                    
+                  {% endfor %}
+                  
+                </ul>
+              </li>
+              {% endif %}
+
 
 
               {% if current_user.is_anonymous %}
@@ -144,11 +163,16 @@
     {{ moment.include_moment() }} {{ moment.lang('ca') }}
 
 
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-      crossorigin="anonymous"
-    ></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='dist/daterangepicker.min.css')}}">
+  <script type="text/javascript" src="{{ url_for('static', filename='dist/jquery.daterangepicker.min.js')}}"></script>
+
+  {% block scripts %}{% endblock %}
+
 
     <!-- Optional JavaScript; choose one of the two! -->
     <script>
