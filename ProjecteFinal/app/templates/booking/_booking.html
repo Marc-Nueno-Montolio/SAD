@@ -1,19 +1,31 @@
 <div class="row">
-    
-    <div class="col-md-3">
-        <img class="img-fluid" style="border-radius:10px" src="{{ booking.products[0].photo_url}}" alt="">
-    </div>
-    <div class="col-md-9">
-        <h4> {{ booking.products[0].name}}</h4>
-        <p>
-            Dates: <b>{{booking.startDate.strftime('%Y-%m-%d') }}</b> fins a: <b>{{booking.endDate.strftime('%Y-%m-%d') }}</b> 
-            <br>
-        </p>
+  <div class="col-md-3">
+    <img
+      class="img-fluid"
+      style="border-radius: 10px"
+      src="{{ booking.products[0].photo_url}}"
+      alt=""
+    />
+  </div>
+  <div class="col-md-9">
+    <h4>{{ booking.products[0].name}}</h4>
+    <p>
+      Dates: <b>{{booking.startDate.strftime('%Y-%m-%d') }}</b> fins a:
+      <b>{{booking.endDate.strftime('%Y-%m-%d') }}</b>
+      <br />
+    </p>
 
-        <p> Subtotal: {{ booking.products[0].price_per_day * (booking.endDate - booking.startDate).days }} €</p>
-        
+    <p>
+      Subtotal: {{ booking.products[0].price_per_day * (booking.endDate -
+      booking.startDate).days }} €
+    </p>
 
-        <p><a href="{{ url_for('booking.delete', id=booking.id)}}" class="btn btn-danger btn-sm">Esborrar</a></p>
-    </div>
+    <p>
+      <a
+        href="{{ url_for('booking.delete', id=booking.id)}}"
+        class="btn btn-danger btn-sm"
+        >Esborrar</a
+      >
+    </p>
+  </div>
 </div>
-
