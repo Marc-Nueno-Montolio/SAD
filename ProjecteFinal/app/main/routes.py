@@ -12,7 +12,7 @@ from app.models import *
 from app.translate import translate
 from app.main import bp
 from app.booking.forms import BookingForm
-
+from app import stripe
 
 @bp.before_app_request
 def before_request():
@@ -77,3 +77,39 @@ def translate_text():
     return jsonify({'text': translate(request.form['text'],
                                       request.form['source_language'],
                                       request.form['dest_language'])})
+
+
+@bp.route('/payments/<price>', methods=['POST', 'GET'])
+def payments(price):
+    
+    checkout_session = stripe.checkout.Session.create(
+
+        line_items=[
+            {
+                'price_data': {
+                    'product_data': {
+                        'name': 'Reserva de material esportiu',
+                    },
+                    'unit_amount': int(float(price))*100,
+                    'currency': 'eur',
+                },
+                'quantity': 1,
+            },
+        ],
+        payment_method_types = ['card'],
+        mode = 'payment',
+        success_url = request.host_url + 'order/success',
+        cancel_url = request.host_url + 'order/cancel',
+
+    )
+    return redirect(checkout_session.url)
+
+
+@bp.route('/success')
+def success():
+    return render_template('success.html')
+
+
+@bp.route('/cancel')
+def cancel():
+    return render_template('cancel.html')

@@ -216,7 +216,7 @@
         {% endwith %}
         <h4>Total: {{current_user.orders.filter_by(status='pending').first().get_total()}} €</h4>
         <p>
-          <p><a href="#" class="btn btn-primary btn">Pagar i confirmar</a></p>
+          <p><a href="{{ url_for('main.payments', price=current_user.orders.filter_by(status='pending').first().get_total())}}" class="btn btn-primary btn">Pagar i confirmar</a></p>
         </p>
       </div>
 
