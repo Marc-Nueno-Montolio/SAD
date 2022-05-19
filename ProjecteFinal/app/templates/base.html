@@ -208,16 +208,19 @@
         ></button>
       </div>
       <div class="offcanvas-body">
-        {%with bookings=current_user.orders.all()[0].bookings.all()%} 
+        {% if current_user.orders.filter_by(status='pending').first() %}
+        {%with bookings=current_user.orders.filter_by(status='pending').first().bookings.all()%} 
         {%for booking in bookings %}
         <hr />
         {% include '/booking/_booking.html'%} {% endfor %}
         <hr />
         {% endwith %}
+        
         <h4>Total: {{current_user.orders.filter_by(status='pending').first().get_total()}} €</h4>
         <p>
           <p><a href="{{ url_for('main.payments', price=current_user.orders.filter_by(status='pending').first().get_total())}}" class="btn btn-primary btn">Pagar i confirmar</a></p>
         </p>
+        {% endif %}
       </div>
 
       {% endif%}

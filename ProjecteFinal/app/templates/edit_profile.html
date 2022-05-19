@@ -3,9 +3,9 @@
 <hr />
 
 <div class="row mt-3">
+  
   <h3>El meu perfil:</h3>
-
-  <div class="col-md-4">
+  <div class="col-md-3">
     <img
       style="border-radius: 10px"
       class="img-fluid"
@@ -13,7 +13,7 @@
       alt=""
     />
   </div>
-  <div class="col-md-8">
+  <div class="col-md-9">
     <form method="POST" action="">
       {{ form.hidden_tag() }}
       <div class="mb-3">
@@ -38,17 +38,39 @@
       <button type="submit" class="btn btn-primary">Guardar canvis</button>
     </form>
   </div>
-  <hr />
+
   <div class="row mt-3">
+    <hr/>
     <h3>El meu historial de compres:</h3>
     {% if orders %}
-    <table class="table">
-      {% for order in orders %}
+
+
+    <div class="col-md-12"><table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Referencia</th>
+          <th scope="col">Data Inici</th>
+          <th scope="col">Data Final</th>
+          <th scope="col">Total</th>
+          <th scope="col">Estat</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        {% if order.bookings.first() %}
       <tr>
-        {{order}} REF: {{order.bookings.first().code.upper()}}
+        <td><b>{{order.bookings.first().code.upper()}}</b></td>
+        <td>{{order.bookings.first().startDate}}</td>
+        <td>{{order.bookings.first().endDate}}</td>
+        <td>{{order.get_total()}}</td>
+        <td>{{ order.status.upper() }}</td>
       </tr>
+      {% endif %}
       {% endfor %}
-    </table>
+      </tbody>
+    </table></div>
+
+
 
     {% endif %}
   </div>

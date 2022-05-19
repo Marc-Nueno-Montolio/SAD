@@ -21,6 +21,8 @@ def before_request():
         db.session.commit()
     g.locale = str(get_locale())
 
+
+
 @bp.route('/', methods=['GET', 'POST'])
 @bp.route('/index', methods=['GET', 'POST'])
 def index():
@@ -99,14 +101,19 @@ def payments(price):
         payment_method_types = ['card'],
         mode = 'payment',
         success_url = request.host_url + 'order/success',
-        cancel_url = request.host_url + 'order/cancel',
+        cancel_url = request.host_url + 'index',
 
     )
     return redirect(checkout_session.url)
 
 
-@bp.route('/success')
+@bp.route('/order/success')
 def success():
+    # Save order as paid
+    order = current_user.orders.filter_by(status='pending').first()
+    order.status = 'paid'
+    db.session.merge(order)
+    db.session.commit()
     return render_template('success.html')
 
 
