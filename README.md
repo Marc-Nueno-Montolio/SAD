@@ -3,12 +3,12 @@ En aquest repositori es poden trobar les pràctiques de l'assignatura SAD realit
 
 S'han desenvolupat 3 pràctiques en Java i 1 projecte en Python.
 Pràctiques en Java:
-- EditableBufferedReader. Aplicació de consola per editar text en raw mode.t  
-- Aplicació Client/Servidor d'un Xat. Client textual.
-- Aplicació Client/Servidor d'un Xat. Client gràfic amb Swing.
+- **EditableBufferedReader**. Aplicació de consola per editar text en raw mode.t  
+- **Client textual**. Aplicació Client/Servidor d'un Xat. 
+- **Client gràfic amb Swing**. Aplicació Client/Servidor d'un Xat. .
 
 Projecte Final:
-- SAD Project. Una aplicació web desenvolupada en Python fent servir el patró  MVC per facilitar la reserva de material esportiu.
+- **SAD Project**. Una aplicació web desenvolupada en Python fent servir el patró  MVC per facilitar la reserva de material esportiu.
 ## EditableBufferedReader
 És un miniprojecte en el que es treballa el patró MVC, parsing de seqüències d'escape d'un emulador de terminal i execució de programes externs des de JAVA.
 
@@ -25,10 +25,26 @@ En aquesta versió s'ha implementat el patrò MVC fent servir Observer/Observa l
 En aquesta versió, a més de tota la funcionalitat de la versió MVC, s'ha afegit la possibilitat de situar-se a qualsevol lloc fent servir el cursor del ratolí. S'han fet servir seqüències d'escapament Xterm.
 [Veure codi](https://github.com/Marc-Nueno-Montolio/SAD/tree/main/EditableBufferedReader/RatoliMVC)
 
-## Client textual
+## Client textual (NetworkChat)
 Consisteix en el disseny del client i servidor d'un programa de Xat. 
 
-## Client gràfic amb Swing
-Es programarà el client de Xat amb entorn gràfic Swing. 
+S'ha desenvolupat un client textual per a terminal i el seu corresponent servidor de Chat (Server), que es comuniquen mitajnçant sockets.
 
-## SADProject
+Al servidor s'han fet diverses implementacions de l'interfície Server.java:
+- ConcurrentHashMapImpl.java
+- HashMapMonitor.java
+- ReentrantReadWriteLockImpl.java
+- SynchronizedMapImpl.java
+D'aquesta manera, en temps d'execució es pot escollir quin tipus de servidor es vol desplegar fent servir la classe RunServer.java
+[Veure codi servidor](https://github.com/Marc-Nueno-Montolio/SAD/tree/main/NetworkChat/server)
+[Veure codi client](https://github.com/Marc-Nueno-Montolio/SAD/blob/main/NetworkChat/Client.java)
+
+## Client gràfic amb Swing (NetworkChatSwingClient)
+S'ha implementat el client de xat fent servir la biblioteca gràfica Swing.
+[Veure codi client](https://github.com/Marc-Nueno-Montolio/SAD/blob/main/NetworkChatSwingClient/Client.java)
+
+## ProjecteFinal (SADProject)
+S'ha desenvolupat una aplicació Web basada en el patró MVC amb l'objectiu de simplificar el lloguer de material esportiu.
+
+L'aplicació s'ha desenvolupat fent servir els frameworks Flask, Bootstrap i JQuery.
+[Veure codi](https://github.com/Marc-Nueno-Montolio/SAD/tree/main/ProjecteFinal)
