@@ -3,7 +3,7 @@ En aquest repositori es poden trobar les pràctiques de l'assignatura SAD realit
 
 S'han desenvolupat 3 pràctiques en Java i 1 projecte en Python.
 Pràctiques en Java:
-- EditableBufferedReader. Aplicació de consola per editar text en raw mode.
+- EditableBufferedReader. Aplicació de consola per editar text en raw mode.t  
 - Aplicació Client/Servidor d'un Xat. Client textual.
 - Aplicació Client/Servidor d'un Xat. Client gràfic amb Swing.
 
